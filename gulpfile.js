@@ -46,22 +46,30 @@ const config = {
 		]
 	},
 
-    // Opciones de Proyecto.
-	projectURL: 'http://localhost/projects/abcservitodo.wp/',   // URL del proyecto local de su sitio de WordPress que ya se está ejecutando. Podría ser algo como wpgulp.local o localhost: 3000 dependiendo de la configuración de WordPress local.
-	productURL: './',                                           // Tema/URL del complemento. Déjelo como está, ya que nuestro gulpfile.js vive en la carpeta raíz.
-	browserAutoOpen: true,
-    injectChanges: true,
+	// Opciones de Proyecto.
+	project: {
+		url: 'http://localhost/projects/abcservitodo.wp/',    // URL del proyecto local de su sitio de WordPress que ya se está ejecutando. Podría ser algo como wpgulp.local o localhost: 3000 dependiendo de la configuración de WordPress local.
+		path: './',                                           // Tema/URL del complemento. Déjelo como está, ya que nuestro gulpfile.js vive en la carpeta raíz.
+		browserAutoOpen: true,
+		injectChanges: true,
+
+		// Rutas de seguimiento de archivos.
+		files: {
+			scss: './src/assets/sass/**/*.scss',                // Ruta a todos los archivos * .scss dentro de la carpeta css y dentro de ellos.
+			php:  './**/*.php',                                 // Ruta a todos los archivos PHP.
+		}
+	},
 
 	// Opciones de estilo.
-	styleSRC: './src/assets/sass/style.scss',                              // Ruta al archivo principal .scss.
-	styleDestination: './',                                     // Ruta para colocar el archivo CSS compilado. Predeterminado establecido en la carpeta raíz.
-	outputStyle: 'compact',                                     // Opciones disponibles → 'compact' or 'compressed' or 'nested' or 'expanded'
-	errLogToConsole: true,
-	precision: 10,
-
-	// Watch files paths.
-	watchStyles: './src/assets/sass/**/*.scss',                            // Ruta a todos los archivos * .scss dentro de la carpeta css y dentro de ellos.
-	watchPhp: './**/*.php',                                     // Ruta a todos los archivos PHP.
+	style: {
+		main: {
+			src: './src/assets/sass/style.scss',                // Ruta al archivo principal .scss.
+			dest: './',                                         // Ruta para colocar el archivo CSS compilado. Predeterminado establecido en la carpeta raíz.
+			outputStyle: 'compact',                             // Opciones disponibles → 'compact' or 'compressed' or 'nested' or 'expanded'
+			errLogToConsole: true,
+			precision: 10
+		},
+	},
 
 	// Los navegadores que te interesan para la revisión automática. Lista de navegadores https://github.com/ai/browserslist
     // La siguiente lista se establece según los requisitos de WordPress. Aunque, siéntase libre de cambiar.
@@ -105,14 +113,14 @@ const errorHandler = r => {
  *    7. Inyecta CSS o vuelve a cargar el navegador a través de browserSync
  */  
 gulp .task( 'styles', () => {
-	return gulp. src( config .styleSRC, { allowEmpty: true })
+	return gulp. src( config .style .main .src, { allowEmpty: true })
 		.pipe( plumber( errorHandler ) )
 		.pipe( sourcemaps .init() )
 		.pipe(
 			sass({
-				errLogToConsole: config .errLogToConsole,
-				outputStyle: config .outputStyle,
-				precision: config .precision
+				errLogToConsole: config .style .main .errLogToConsole,
+				outputStyle: config .style .main .outputStyle,
+				precision: config .style .main .precision
 			})
 		)
 		.on( 'error', sass .logError )
@@ -121,14 +129,14 @@ gulp .task( 'styles', () => {
 		.pipe( autoprefixer( config .BROWSERS_LIST ) )
 		.pipe( sourcemaps .write( './' ) )
 		.pipe( lineec() )                                       // Terminaciones de línea consistentes para sistemas no UNIX.
-		.pipe( gulp .dest( config .styleDestination ) )
+		.pipe( gulp .dest( config .style .main .dest ) )
 		.pipe( filter( '**/*.css' ) )                           // Filtrado de la secuencia a sólo archivos css.
 		.pipe( mmq({ log: true }) )                             // Combinar consultas de medios solo para la versión .min.css.
 		.pipe( browserSync .stream() )                          // Vuelve a cargar style.css si está en cola.
 		.pipe( rename({ suffix: '.min' }) )
 		.pipe( minifycss({ maxLineLen: 10 }) )
 		.pipe( lineec() )                                       // Terminaciones de línea consistentes para sistemas no UNIX.
-		.pipe( gulp .dest( config .styleDestination ) )
+		.pipe( gulp .dest( config .style .main .dest ) )
 		.pipe( filter( '**/*.css' ) )                           // Filtrado de la secuencia a sólo archivos css.
 		.pipe( browserSync .stream() )                          // Vuelve a cargar style.min.css si está en cola.
 		.pipe( notify({ message: '\n\n✅ > Sass — CSS generados con éxito!\n', onLast: true }) );
@@ -143,9 +151,9 @@ gulp .task( 'styles', () => {
  */
 const browsersync = done => {
 	browserSync .init({
-		proxy: config .projectURL,
-		open: config .browserAutoOpen,
-		injectChanges: config .injectChanges,
+		proxy: config .project .url,
+		open: config .project .browserAutoOpen,
+		injectChanges: config .project .injectChanges,
 		watchEvents: [ 'change', 'add', 'unlink', 'addDir', 'unlinkDir' ]
 	});
 	done();
@@ -205,7 +213,8 @@ gulp .task( 'remove', ( done ) => {
 gulp .task(
 	'default',
 	gulp .parallel( 'styles', browsersync, () => {
-		gulp .watch( config .watchPhp, reload );                  // Recargar en los cambios de archivos PHP.
+		gulp .watch( config .project .files .php, reload );                  		// Recargar en los cambios de archivos PHP.
+		gulp .watch( config .project .files .scss, gulp.parallel( 'styles' ) ); 	// Recargar en los cambios de archivos SCSS.
 	})
 );
 /**
