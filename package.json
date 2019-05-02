@@ -1,0 +1,20 @@
+{
+  "name": "abc-servitodo",
+  "version": "1.0.0",
+  "description": "WordPress Theme Development Automation with Gulp",
+  "main": "gulpfile.js",
+  "scripts": {
+    "start": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git remote add origin https://github.com/jcarlosj/WordPress-Official-Theme-ABCServiTodo.git"
+  },
+  "keywords": [
+    "underscore",
+    "gulp",
+    "sass"
+  ],
+  "author": "Juan Carlos Jiménez Gutiérrez <jcjimenez29@misena.edu.co>",
+  "license": "ISC"
+}
