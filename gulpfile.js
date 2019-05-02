@@ -18,7 +18,8 @@ const rename = require( 'gulp-rename' ),                        // Renombra arch
       notify = require( 'gulp-notify' ),                        // Te envía un mensaje de notificación.
       browserSync = require( 'browser-sync' ) .create(),        // Recarga el navegador e inyecta CSS. Prueba del navegador sincronizada que ahorra tiempo.
       plumber = require( 'gulp-plumber' ),                      // Prevenga la rotura de la tubería causada por errores de los complementos de Gulp.
-      beep = require( 'beepbeep' );
+	  beep = require( 'beepbeep' ),
+	  del = require( 'del' );
 
 /**
  * >> Archivo de configuración de Gulp para WordPress <<
@@ -27,6 +28,24 @@ const rename = require( 'gulp-rename' ),                        // Renombra arch
  */
 const config = {
 
+	// Opciones para Underscore Theme
+	underscore: {
+		move: {
+			sass: {
+				src:  './sass/**/*',
+				dest: './src/assets/sass/'
+			},
+			js: {
+				src:  './js/**/*',
+				dest: './src/assets/js/'
+			}
+		},
+		remove: [ 
+			'./sass/*', './sass/',
+			'./js/*', './js/'
+		]
+	},
+
     // Opciones de Proyecto.
 	projectURL: 'http://localhost/projects/abcservitodo.wp/',   // URL del proyecto local de su sitio de WordPress que ya se está ejecutando. Podría ser algo como wpgulp.local o localhost: 3000 dependiendo de la configuración de WordPress local.
 	productURL: './',                                           // Tema/URL del complemento. Déjelo como está, ya que nuestro gulpfile.js vive en la carpeta raíz.
@@ -34,14 +53,14 @@ const config = {
     injectChanges: true,
 
 	// Opciones de estilo.
-	styleSRC: './sass/style.scss',                              // Ruta al archivo principal .scss.
+	styleSRC: './src/assets/sass/style.scss',                              // Ruta al archivo principal .scss.
 	styleDestination: './',                                     // Ruta para colocar el archivo CSS compilado. Predeterminado establecido en la carpeta raíz.
 	outputStyle: 'compact',                                     // Opciones disponibles → 'compact' or 'compressed' or 'nested' or 'expanded'
 	errLogToConsole: true,
 	precision: 10,
 
 	// Watch files paths.
-	watchStyles: './sass/**/*.scss',                            // Ruta a todos los archivos * .scss dentro de la carpeta css y dentro de ellos.
+	watchStyles: './src/assets/sass/**/*.scss',                            // Ruta a todos los archivos * .scss dentro de la carpeta css y dentro de ellos.
 	watchPhp: './**/*.php',                                     // Ruta a todos los archivos PHP.
 
 	// Los navegadores que te interesan para la revisión automática. Lista de navegadores https://github.com/ai/browserslist
@@ -139,6 +158,47 @@ const reload = done => {
 };
 
 /**
+ * >> Task: `copy_sass`. <<
+ * Copia archivos directorio 'sass' a './src/assets/'.
+ *
+ * Esta tarea hace lo siguiente:
+ *    1. Obtiene el directorio donde se encuentran los archivos fuente scss
+ *    2. Copia la estructura de directorios y archivos obtenidos en una ruta nueva.
+ */ 
+gulp .task( 'copy_sass', () => {
+    return gulp .src( config .underscore .move .sass .src )
+		.pipe( gulp .dest( config .underscore .move .sass .dest ) )
+		.pipe( notify({ message: '\n\n✅ > Underscore — Mueve directorio "sass" con éxito!\n', onLast: true }) );
+});
+
+/**
+ * >> Task: `copy_js`. <<
+ * Copia archivos directorio 'js' a './src/assets/'.
+ *
+ * Esta tarea hace lo siguiente:
+ *    1. Obtiene el directorio donde se encuentran los archivos fuente js
+ *    2. Copia la estructura de directorios y archivos obtenidos en una ruta nueva.
+ */ 
+gulp .task( 'copy_js', () => {
+    return gulp .src( config .underscore .move .js .src )
+		.pipe( gulp .dest( config .underscore .move .js .dest ) )
+		.pipe( notify({ message: '\n\n✅ > Underscore — Mueve directorio "js" con éxito!\n', onLast: true }) );
+});
+
+/**
+ * >> Task: `remove`. <<
+ * Elimina directorios y archivos de los directorios 'sass' y 'js'
+ *
+ * Esta tarea hace lo siguiente:
+ *    1. Obtiene todas las rutas de los directorios y archivos a eliminar.
+ *    2. Elimina todos los archivos y directorios indicados
+ */ 
+gulp .task( 'remove', ( done ) => {
+	return del .sync( [] .concat( config .underscore .remove ) );
+	done();
+});
+
+/**
  * >> Watch Tasks. <<
  * Observa cambios de archivos y ejecuta tareas específicas.
  */
@@ -147,4 +207,19 @@ gulp .task(
 	gulp .parallel( 'styles', browsersync, () => {
 		gulp .watch( config .watchPhp, reload );                  // Recargar en los cambios de archivos PHP.
 	})
+);
+/**
+ * >> Task: `underscore` <<
+ * Modifica estructura de directorios del Tema de inicio 'Underscore'
+ * moviendo los directorios 'sass' y 'js' del raíz a las rutas 
+ * './src/assets/sass' y './src/assets/sass' respectivamente.
+ * 
+ *  Esta tarea hace lo siguiente:
+ *    1. Obtiene rutas de directorios 'sass' y 'js' del directorio raíz del tema
+ *    2. Copia dichos directorios a la ruta './src/assets/'
+ *    3. Elimina los archivos y directorios en el directorio raíz del tema
+ */
+gulp .task( 
+	'underscore', 
+	gulp .series ( 'copy_sass', 'copy_js', 'remove' ) 
 );
