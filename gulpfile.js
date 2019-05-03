@@ -10,6 +10,10 @@ const sass = require( 'gulp-sass' ),                            // Gulp plugin p
       autoprefixer = require( 'gulp-autoprefixer' ),            // Agrega prefijos CSS automática.
       mmq = require( 'gulp-merge-media-queries' );              // Combine las consultas de medios coincidentes en uno.
 
+// Complementos relacionados con JavaScript
+const uglify = require( 'gulp-uglify' ), 						// Minimiza archivos JavaScript.
+      babel = require( 'gulp-babel' ); 							// Compila "ESNext" para hacer JavaScript complatible con los navegadores. 
+
 // Complementos utilitarios.
 const rename = require( 'gulp-rename' ),                        // Renombra archivos E.g. style.css -> style.min.css.
       lineec = require( 'gulp-line-ending-corrector' ),         // Terminaciones de línea consistentes para sistemas no UNIX. Complemento de Gulp para corrector de final de línea (una utilidad que se asegura de que sus archivos tengan finales de línea consistentes).
@@ -19,7 +23,9 @@ const rename = require( 'gulp-rename' ),                        // Renombra arch
       browserSync = require( 'browser-sync' ) .create(),        // Recarga el navegador e inyecta CSS. Prueba del navegador sincronizada que ahorra tiempo.
       plumber = require( 'gulp-plumber' ),                      // Prevenga la rotura de la tubería causada por errores de los complementos de Gulp.
 	  beep = require( 'beepbeep' ),
-	  del = require( 'del' );
+	  del = require( 'del' ),
+	  remember = require( 'gulp-remember' ),                    // Recuerda todos los archivos que ha visto de nuevo en la transmisión.
+	  stripdebug = require( 'gulp-strip-debug' );				// Eliminar las declaraciones de consola, alerta y depurador del código JavaScript. Útil para asegurarse de que no dejó ningún registro en el código de producción.
 
 /**
  * >> Archivo de configuración de Gulp para WordPress <<
@@ -56,6 +62,7 @@ const config = {
 		// Rutas de seguimiento de archivos.
 		files: {
 			scss: './src/assets/sass/**/*.scss',                // Ruta a todos los archivos * .scss dentro de la carpeta css y dentro de ellos.
+			js:   './src/assets/js/**/*.js',                    // Ruta a todos los archivos JavaScript.
 			php:  './**/*.php',                                 // Ruta a todos los archivos PHP.
 		}
 	},
@@ -69,6 +76,12 @@ const config = {
 			errLogToConsole: true,
 			precision: 10
 		},
+	},
+
+	// Opciones de JavaScript
+	js: {
+		src:  './src/assets/js/**/*.js',
+		dest: './dist/assets/js/'
 	},
 
 	// Los navegadores que te interesan para la revisión automática. Lista de navegadores https://github.com/ai/browserslist
@@ -93,7 +106,7 @@ const config = {
  * @param Mixed err
  */
 const errorHandler = r => {
-	notify .onError( '\n\n❌  ===> ERROR: <%= error .message %>\n' )( r );
+	notify .onError( '\n\n❌  > ERROR: <%= error .message %>\n' )( r );
 	beep();
 
 	// this .emit( 'end' );
@@ -139,7 +152,7 @@ gulp .task( 'styles', () => {
 		.pipe( gulp .dest( config .style .main .dest ) )
 		.pipe( filter( '**/*.css' ) )                           // Filtrado de la secuencia a sólo archivos css.
 		.pipe( browserSync .stream() )                          // Vuelve a cargar style.min.css si está en cola.
-		.pipe( notify({ message: '\n\n✅ > Sass — CSS generados con éxito!\n', onLast: true }) );
+		.pipe( notify({ message: '\n\n✅ > Sass — CSS Generados con éxito!\n', onLast: true }) );
 });  
 
 /**
@@ -207,14 +220,54 @@ gulp .task( 'remove', ( done ) => {
 });
 
 /**
+ * >> Task: `jsFiles`. <<
+ * Compila JavaScript a ES8 y Minifica JS.
+ *
+ * Esta tarea hace lo siguiente:
+ *    1. Obtiene los archivos fuente js.
+ *    2. Compila JavaScript a ES8.
+ *    3. Genera archivos JavaScript sin Minificación.
+ *    4. Elimina declaraciones de consola, alertas y de depuración de todos los archivos
+ *    5. Minimiza todos los archivos JavaScript
+ *    5. Renombra todos los archivos JavaScript con el sufijo .min.js
+ *    6. Genera archivos JavaScript con Minificación.
+ */ 
+gulp .task( 'jsFiles', () => {
+	return gulp .src( config .js .src, { since: gulp .lastRun( 'jsFiles' ) }) 	// Sólo se ejecuta en archivos modificados.
+		.pipe( plumber( errorHandler ) )
+		.pipe(
+			babel({
+				presets: [
+					[
+						'@babel/env', 														// Preset para compilar su JavaScript Moderno a ES8.
+						{
+							targets: { browsers: config .BROWSERS_LIST } 				// Lista de navegadores que se desean soportar.
+						}
+					]
+				]
+			})
+		)
+		.pipe( remember( config .js .src ) ) 							// Trae todos los archivos de nuevo a la corriente.
+		.pipe( lineec() ) 																// Terminaciones de línea consistentes para sistemas no UNIX.
+		.pipe( gulp .dest( config .js .dest ) )
+		.pipe( stripdebug() )															// Elimina declaraciones de consola, alerta y depuración en JavaScript (Código listo para producción)
+		.pipe( uglify() )
+		.pipe( rename( { suffix: '.min' } ) )
+		.pipe( lineec() )   															// Terminaciones de línea consistentes para sistemas no UNIX.
+		.pipe( gulp .dest( config .js .dest ) )
+		.pipe( notify({ message: '\n\n✅  > ES8 — JS Generados con éxito!\n', onLast: true }) );
+});
+
+/**
  * >> Watch Tasks. <<
  * Observa cambios de archivos y ejecuta tareas específicas.
  */
 gulp .task(
 	'default',
-	gulp .parallel( 'styles', browsersync, () => {
-		gulp .watch( config .project .files .php, reload );                  		// Recargar en los cambios de archivos PHP.
-		gulp .watch( config .project .files .scss, gulp.parallel( 'styles' ) ); 	// Recargar en los cambios de archivos SCSS.
+	gulp .series( 'jsFiles', 'styles', browsersync, () => {
+		gulp .watch( config .project .files .php, reload );                  					// Recargar archivos PHP que cambien.
+		gulp .watch( config .project .files .scss, gulp .parallel( 'styles' ) ); 			// Recargar archivos SCSS que cambien.
+		gulp .watch( config .project .files .js, gulp .series( 'jsFiles', reload ) );	// Recargar archivos JavaScript que cambien.
 	})
 );
 /**
