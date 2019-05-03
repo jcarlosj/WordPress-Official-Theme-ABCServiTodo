@@ -4,6 +4,7 @@
 
 # ignore node dependency directories (used by grunt)
 node_modules/
+dist/
 extras/
 
 # ignore OS generated files
