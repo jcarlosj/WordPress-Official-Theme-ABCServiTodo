@@ -41,9 +41,22 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 # Media
 	## Captions
 	## Galleries
+# Components
+	## Carousel	
+	## Info
+# Vendors
+	## ReWrite bootstrap style sheet	
+	## Carousel
+	## Accordion
+# Debug
+	## Debugging PHP Code
+	## Debugging CSS Code Carousel
+	## Debugging CSS Section us	
 --------------------------------------------------------------*/
 @import "variables-site/variables-site";
 @import "mixins/mixins-master";
+@import "mixins/media-queries";
+@import "mixins/social-networking";
 
 /*--------------------------------------------------------------
 # Normalize
@@ -104,3 +117,23 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 # Media
 --------------------------------------------------------------*/
 @import "media/media";
+
+/*--------------------------------------------------------------
+# Components
+--------------------------------------------------------------*/
+@import "components/carousel";
+@import "components/info";
+
+/*--------------------------------------------------------------
+# Vendors
+--------------------------------------------------------------*/
+@import "vendors/bootstrap";
+@import "vendors/carousel";
+@import "vendors/accordion";
+
+/*--------------------------------------------------------------
+# Debug (Only Production)
+--------------------------------------------------------------*/
+@import "debug/php";
+//@import "debug/carousel";
+//@import "debug/section-us";

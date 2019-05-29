@@ -21,3 +21,32 @@
 	clear: both;
 	margin: 0 0 1.5em;
 }
+
+.page {
+
+    h2 {
+        font-size: 2.4rem;
+    }
+
+    &-header {
+        position: relative;
+    }
+    &--title {
+        background-color: #FFFFFF;
+        margin-top: 2.6rem;
+        padding: 1rem 2rem 1rem .2rem;
+        position: absolute;
+        z-index: 10;
+        
+        h2 {
+            font-size: 3rem;
+        }
+        h3 {
+            font-size: 2rem;
+        }
+    }
+
+    .outstanding-image {
+        position: relative;
+    }
+}

@@ -1,0 +1,74 @@
+.header {
+
+    border-top: 6px solid #1a71b1;
+    display: flex;
+    flex-direction: column;
+    
+    ul { 
+        margin-top: 0;
+    }
+
+    &__top {
+        background-color: #F8F5F2; 
+        order: 3;
+        display: none;
+
+        @include media-md {
+            order: -1;
+            display: block;
+        }
+    }
+    &__middle {
+        //background-color: rgba(26, 113, 177, 1);
+        display: none;
+
+        @include media-md {
+            display: block;
+        }
+    }
+    &__bottom {
+        background-color: #F8F5F2;
+        order: -1;
+
+        @include media-md {
+            background-color: rgba(26, 113, 177, 1);
+            order: 3;
+        }
+    }
+
+    .logo {
+        &--inside-menu {
+            width: 36%;
+        }
+        &--small {
+            background-image: url( '../images/logo-abcservitodo.png' );
+            background-position: -8px center;
+            background-repeat: no-repeat;
+            //border: 1px solid blue;
+            height: 32px;
+            width: 210px;
+        }
+    }
+    
+    .btn {
+
+        &__action {
+            width: 10rem;    
+        }
+        &__inside--menu {
+            display: block;
+            
+            @include media-md {
+                display: none;
+            }
+        }
+        &__outside--menu {
+            display: none;
+            
+            @include media-md {
+                display: block;
+            }
+        }
+        
+    }
+}

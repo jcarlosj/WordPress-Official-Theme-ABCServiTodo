@@ -123,6 +123,8 @@ function abc_servitodo_scripts() {
 	// wp_enqueue_style( 'abc-servitodo-style', get_stylesheet_uri() );										// Enlaza automáticamente hoja de estilos style.css en el raíz del tema
 	wp_enqueue_style( 'abc-servitodo-style-min', get_template_directory_uri() . '/style.min.css' );			// Enlaza hoja de estilos style.min.css en el raíz del tema
 	wp_enqueue_style( 'bootstrap', get_template_directory_uri(). '/dist/libs/bootstrap.min.css', false );	// Enlaza hola de estilos 'Bootstrap'
+	wp_enqueue_style( 'fontawesome', 'https://use.fontawesome.com/releases/v5.8.2/css/all.css', false );	// Enlaza URL del CDN de 'Fontawesome'
+	wp_enqueue_style( 'google-fonts', 'https://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800|Rubik:300,400,500,700,900|Nunito:200,300,400,600,700,800,900&display=swap', false ); // Enlaza URL del CDN de fuentes de 'Google Fonts'
 
 	//wp_enqueue_script( 'jquery' );																										// Enlaza versión de jQuery disponible de WordPress
 	wp_enqueue_script( 'abc-servitodo-jquery', get_template_directory_uri() . '/dist/libs/jquery.min.js', array(), 'v4.3.1', true );		// Enlaza versión de jQuery 

@@ -1,2 +1,9 @@
 $size__site-main: 100%;
 $size__site-sidebar: 25%;
+
+// Responsive widths.
+$xs: 576px;      // [xs-min] Small smartphones (landscape view, portrait view)
+$sm: 576px;      // [sm-min] Small tablets and large smartphones (landscape view)
+$md: 768px;      // [md-min] Small tablets (portrait view)
+$lg: 992px;      // [lg-min] Tablets and small desktops
+$xl: 1200px;     // [xl-min] Large tablets and desktops
