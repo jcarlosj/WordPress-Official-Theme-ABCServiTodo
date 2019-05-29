@@ -2,7 +2,7 @@
  * >> Carga Plugins. <<
  * Importa, Carga plugins de Gulp y asigna a variables con nombres descriptivos.
  */
-const gulp = require( 'gulp' );                                 // Gulp
+const { task, src, dest, lastRun, watch, series, parallel } = require( 'gulp' );                                 // Gulp
 
 // Complementos relacionados con CSS.
 const sass = require( 'gulp-sass' ),                            // Gulp plugin para la compilación de Sass.
@@ -12,7 +12,10 @@ const sass = require( 'gulp-sass' ),                            // Gulp plugin p
 
 // Complementos relacionados con JavaScript
 const uglify = require( 'gulp-uglify' ), 						// Minimiza archivos JavaScript.
-      babel = require( 'gulp-babel' ); 							// Compila "ESNext" para hacer JavaScript complatible con los navegadores. 
+			babel = require( 'gulp-babel' ); 							// Compila "ESNext" para hacer JavaScript complatible con los navegadores. 
+			
+// Complementos relacionados con imagenes			
+const imagemin = require( 'gulp-imagemin' );										// Minimiza y optimiza imagenes.			
 
 // Complementos utilitarios.
 const rename = require( 'gulp-rename' ),                        // Renombra archivos E.g. style.css -> style.min.css.
@@ -25,7 +28,8 @@ const rename = require( 'gulp-rename' ),                        // Renombra arch
 			beep = require( 'beepbeep' ),
 			del = require( 'del' ),
 			remember = require( 'gulp-remember' ),                    // Recuerda todos los archivos que ha visto de nuevo en la transmisión.
-			stripdebug = require( 'gulp-strip-debug' );				// Eliminar las declaraciones de consola, alerta y depurador del código JavaScript. Útil para asegurarse de que no dejó ningún registro en el código de producción.
+			stripdebug = require( 'gulp-strip-debug' ),				// Eliminar las declaraciones de consola, alerta y depurador del código JavaScript. Útil para asegurarse de que no dejó ningún registro en el código de producción.
+			cache = require( 'gulp-cache' ); 													// Archivos de caché en secuencia para su uso posterior.
 
 /**
  * >> Archivo de configuración de Gulp para WordPress <<
@@ -64,6 +68,10 @@ const config = {
 			scss: './src/assets/sass/**/*.scss',                // Ruta a todos los archivos * .scss dentro de la carpeta css y dentro de ellos.
 			js:   './src/assets/js/**/*.js',                    // Ruta a todos los archivos JavaScript.
 			php:  './**/*.php',                                 // Ruta a todos los archivos PHP.
+			images: {
+				src: './src/assets/images/**/*.{png,jpg,gif,svg}', // Ruta a todos los archivos de imagen.
+				dest: './dist/assets/images/'
+			}
 		}
 	},
 
@@ -152,8 +160,8 @@ const errorHandler = r => {
  *    6. Minimiza el archivo CSS y genera style.min.css
  *    7. Inyecta CSS o vuelve a cargar el navegador a través de browserSync
  */  
-gulp .task( 'styles', () => {
-	return gulp. src( config .style .main .src, { allowEmpty: true })
+task( 'styles', () => {
+	return  src( config .style .main .src, { allowEmpty: true } )
 		.pipe( plumber( errorHandler ) )
 		.pipe( sourcemaps .init() )
 		.pipe(
@@ -169,14 +177,14 @@ gulp .task( 'styles', () => {
 		.pipe( autoprefixer( config .BROWSERS_LIST ) )
 		.pipe( sourcemaps .write( './' ) )
 		.pipe( lineec() )                                       // Terminaciones de línea consistentes para sistemas no UNIX.
-		.pipe( gulp .dest( config .style .main .dest ) )
+		.pipe( dest( config .style .main .dest ) )
 		.pipe( filter( config .style .filter ) )                           // Filtrado de la secuencia a sólo archivos css.
 		.pipe( mmq({ log: true }) )                             // Combinar consultas de medios solo para la versión .min.css.
 		.pipe( browserSync .stream() )                          // Vuelve a cargar style.css si está en cola.
 		.pipe( rename({ suffix: '.min' }) )
 		.pipe( minifycss({ maxLineLen: 10 }) )
 		.pipe( lineec() )                                       // Terminaciones de línea consistentes para sistemas no UNIX.
-		.pipe( gulp .dest( config .style .main .dest ) )
+		.pipe( dest( config .style .main .dest ) )
 		.pipe( filter( config .style .filter ) )                           // Filtrado de la secuencia a sólo archivos css.
 		.pipe( browserSync .stream() )                          // Vuelve a cargar style.min.css si está en cola.
 		.pipe( notify({ message: '\n\n✅ > Sass — CSS Generados con éxito!\n', onLast: true }) );
@@ -195,8 +203,8 @@ gulp .task( 'styles', () => {
  *    5. Minimiza el archivo CSS y genera style.min.css
  *    6. Inyecta CSS o vuelve a cargar el navegador a través de browserSync
  */
-gulp .task( 'styles-lib', () => {
-	return gulp .src( libs .src .scss )
+task( 'styles-lib', () => {
+	return src( libs .src .scss, { allowEmpty: true } )
 		.pipe( plumber( errorHandler ) )
 		.pipe( sourcemaps .init() )
 		.pipe(
@@ -210,11 +218,11 @@ gulp .task( 'styles-lib', () => {
 		.pipe( sourcemaps .write({ includeContent: false }) )
 		.pipe( sourcemaps .init({ loadMaps: true }) )
 		.pipe( sourcemaps .write( './' ) )
-		.pipe( gulp .dest( libs .dest ) )
+		.pipe( dest( libs .dest ) )
 		.pipe( browserSync .stream() )                          // Vuelve a cargar style.css si está en cola.
 		.pipe( rename({ suffix: '.min' }) )
 		.pipe( minifycss({ maxLineLen: 10 }) )
-		.pipe( gulp .dest( libs .dest ) )
+		.pipe( dest( libs .dest ) )
 		.pipe( filter( config .style .filter ) )                // Filtrado de la secuencia a sólo archivos css.
 		.pipe( notify({ message: '\n\n✅ > Sass — Libs Generados con éxito!\n', onLast: true }) );
 });
@@ -261,9 +269,9 @@ const paths = done => {
  *    1. Obtiene el directorio donde se encuentran los archivos fuente scss
  *    2. Copia la estructura de directorios y archivos obtenidos en una ruta nueva.
  */ 
-gulp .task( 'copy_sass', () => {
-    return gulp .src( config .underscore .move .sass .src )
-		.pipe( gulp .dest( config .underscore .move .sass .dest ) )
+task( 'copy_sass', () => {
+    return src( config .underscore .move .sass .src, { allowEmpty: true } )
+		.pipe( dest( config .underscore .move .sass .dest ) )
 		.pipe( notify({ message: '\n\n✅ > Underscore — Mueve directorio "sass" con éxito!\n', onLast: true }) );
 });
 
@@ -275,9 +283,9 @@ gulp .task( 'copy_sass', () => {
  *    1. Obtiene el directorio donde se encuentran los archivos fuente js
  *    2. Copia la estructura de directorios y archivos obtenidos en una ruta nueva.
  */ 
-gulp .task( 'copy_js', () => {
-    return gulp .src( config .underscore .move .js .src )
-		.pipe( gulp .dest( config .underscore .move .js .dest ) )
+task( 'copy_js', () => {
+    return src( config .underscore .move .js .src, { allowEmpty: true } )
+		.pipe( dest( config .underscore .move .js .dest ) )
 		.pipe( notify({ message: '\n\n✅ > Underscore — Mueve directorio "js" con éxito!\n', onLast: true }) );
 });
 
@@ -289,7 +297,7 @@ gulp .task( 'copy_js', () => {
  *    1. Obtiene todas las rutas de los directorios y archivos a eliminar.
  *    2. Elimina todos los archivos y directorios indicados
  */ 
-gulp .task( 'remove', ( done ) => {
+task( 'remove', ( done ) => {
 	return del .sync( [] .concat( config .underscore .remove ) );
 	done();
 });
@@ -307,8 +315,8 @@ gulp .task( 'remove', ( done ) => {
  *    5. Renombra todos los archivos JavaScript con el sufijo .min.js
  *    6. Genera archivos JavaScript con Minificación.
  */ 
-gulp .task( 'jsFiles', () => {
-	return gulp .src( config .js .src, { since: gulp .lastRun( 'jsFiles' ) }) 	// Sólo se ejecuta en archivos modificados.
+task( 'jsFiles', () => {
+	return src( config .js .src, { since: lastRun( 'jsFiles' ) }) 	// Sólo se ejecuta en archivos modificados.
 		.pipe( plumber( errorHandler ) )
 		.pipe(
 			babel({
@@ -324,12 +332,12 @@ gulp .task( 'jsFiles', () => {
 		)
 		.pipe( remember( config .js .src ) ) 							// Trae todos los archivos de nuevo a la corriente.
 		.pipe( lineec() ) 																// Terminaciones de línea consistentes para sistemas no UNIX.
-		.pipe( gulp .dest( config .js .dest ) )
+		.pipe( dest( config .js .dest ) )
 		.pipe( stripdebug() )															// Elimina declaraciones de consola, alerta y depuración en JavaScript (Código listo para producción)
 		.pipe( uglify() )
 		.pipe( rename( { suffix: '.min' } ) )
 		.pipe( lineec() )   															// Terminaciones de línea consistentes para sistemas no UNIX.
-		.pipe( gulp .dest( config .js .dest ) )
+		.pipe( dest( config .js .dest ) )
 		.pipe( notify({ message: '\n\n✅ > ES8 — JS Generados con éxito!\n', onLast: true }) );
 });
 
@@ -345,8 +353,8 @@ gulp .task( 'jsFiles', () => {
  *    5. Renombra todos los archivos JavaScript con el sufijo .min.js
  *    6. Genera archivos JavaScript con Minificación.
  */
-gulp .task( 'jsLib', () => {
-	return gulp .src( libs .src .js, { since: gulp .lastRun( 'jsLib' ) }) 	// Sólo se ejecuta en archivos modificados.
+task( 'jsLib', () => {
+	return src( libs .src .js, { since: lastRun( 'jsLib' ) }) 	// Sólo se ejecuta en archivos modificados.
 		.pipe( plumber( errorHandler ) )
 		.pipe(
 			babel({
@@ -361,30 +369,56 @@ gulp .task( 'jsLib', () => {
 			})
 		)
 		.pipe( lineec() ) 																// Terminaciones de línea consistentes para sistemas no UNIX.
-		.pipe( gulp .dest( libs .dest ) )
+		.pipe( dest( libs .dest ) )
 		.pipe( stripdebug() )															// Elimina declaraciones de consola, alerta y depuración en JavaScript (Código listo para producción)
 		.pipe( uglify() )
 		.pipe( rename( { suffix: '.min' } ) )
 		.pipe( lineec() )   															// Terminaciones de línea consistentes para sistemas no UNIX.
-		.pipe( gulp .dest( libs .dest ) )
+		.pipe( dest( libs .dest ) )
 		.pipe( notify({ message: '\n\n✅  > ES8 —  Libs Generados con éxito!!\n', onLast: true }) );
+});
+
+/**
+ * >> Task: `images`. <<
+ * Minimiza imágenes PNG, JPEG, GIF y SVG
+ */ 
+
+task( 'images', () => {
+	return src( config .project .files .images .src, { since: lastRun( 'images' ) } )
+		.pipe(
+			cache(
+				imagemin([
+					imagemin .gifsicle({ interlaced: true }),
+					imagemin .jpegtran({ progressive: true }),
+					imagemin .optipng({ optimizationLevel: 3 }), // 0-7 low-high.
+					imagemin .svgo({
+						plugins: [ { removeViewBox: true }, { cleanupIDs: false } ]
+					})
+				])
+			)
+		)
+		.pipe( dest( config .project .files .images .dest ) )
+		.pipe( notify({ message: '  ✅ Imagenes optimizadas con éxito!! ', onLast: true }) );
 });
 
 /**
  * >> Watch Tasks. <<
  * Observa cambios de archivos y ejecuta tareas específicas.
  */
-gulp.task(
+task(
 	'default',
-	gulp .series(
-		gulp .series( 
-			paths, gulp .parallel( 'jsLib', 'styles-lib' ), 
-			gulp .series( 'jsFiles', 'styles' ), 
+	series(
+		series( 
+			paths, 
+			series( 'images' ),
+			parallel( 'jsLib', 'styles-lib' ), 
+			series( 'jsFiles', 'styles' ), 
 			browsersync, 
 			() => {
-				gulp .watch( config .project .files .php, reload );                  					// Recargar archivos PHP que cambien.
-				gulp .watch( config .project .files .scss, gulp .parallel( 'styles' ) ); 			// Recargar archivos SCSS que cambien.
-				gulp .watch( config .project .files .js, gulp .series( 'jsFiles', reload ) );	// Recargar archivos JavaScript que cambien.
+				watch( config .project .files .php, reload );                  					// Recargar archivos PHP que cambien.
+				watch( config .project .files .scss, series( 'styles', reload ) ); // Recargar archivos SCSS que cambien.
+				watch( config .project .files .js, series( 'jsFiles', reload ) );	// Recargar archivos JavaScript que cambien.
+				watch( config .project .files .images .src, series( 'images', reload ) );	// Recargar archivos de Imagen que cambien.
 			}
 		)
 	)
@@ -401,12 +435,12 @@ gulp.task(
  *    2. Copia dichos directorios a la ruta './src/assets/'
  *    3. Elimina los archivos y directorios en el directorio raíz del tema
  */
-gulp .task( 
+task( 
 	'underscore', 
-	gulp .series ( 'copy_sass', 'copy_js', 'remove' ) 
+	series ( 'copy_sass', 'copy_js', 'remove' ) 
 );
 
-gulp .task( 
+task( 
 	'paths', 
-	gulp .series ( paths ) 
+	series ( paths ) 
 );
