@@ -26,7 +26,7 @@
                         </hgroup>
                         <div class="row">
                             <div class="col-5 col-md-12">
-                                <img class="img-fluid" src="./dist/assets/images/logo-abcservitodo.png" alt="ABC ServiTodo">
+                                <img class="img-fluid" src="<?php echo get_template_directory_uri() .'/dist/assets/images/logo-abcservitodo.png'; ?>" alt="ABC ServiTodo">
                             </div>
                             <div class="col-7 col-md-12">
                                 <p>Itaque tempore nisi eaque esse sint! Animi nostrum exercitationem mollitia, repudiandae dolores illum cumque ducimus rerum error?</p>

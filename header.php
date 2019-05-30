@@ -66,8 +66,8 @@
 
 					<div class="row justify-content-between align-items-center">
 						<div class="col-12 col-md-4 d-flex justify-content-start">
-							<a class="logo" href="#">
-								<img class="img-fluid mx-auto" src="./dist/assets/images/logo-abcservitodo.png" alt="ABC ServiTodo">
+							<a class="logo" href="<?php echo esc_url( home_url( './' ) ); ?>">
+								<img class="img-fluid mx-auto" src="<?php echo get_template_directory_uri() . '/dist/assets/images/logo-abcservitodo.png'; ?>" alt="ABC ServiTodo">
 							</a>    
 						</div>
 						<div class="col-12 col-md-8 d-none d-md-block">
