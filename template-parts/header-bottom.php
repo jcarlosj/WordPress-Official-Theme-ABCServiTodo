@@ -37,20 +37,7 @@
                     <?php else: ?>
                         No existe
                     <?php endif; ?>
-
-                    <!--div class="collapse navbar-collapse menu-main" id="menu-main">
-                        <ul class="navbar-nav mr-auto text-uppercase">
-                            <li><a class="nav-link" href="#">Nosotros</a></li>
-                            <li><a class="nav-link" href="#">Blog</a></li>
-                            <li><a class="nav-link" href="#">Clases</a></li>
-                            <li><a class="nav-link" href="#">Galería</a></li>
-                            <li><a class="nav-link" href="#">Contacto</a></li>
-                            <li><a class="nav-link my-2 my-sm-0 btn btn-primary btn__action btn__inside--menu" href="#">Cotice ahora!</a></li>
-                        </ul>
-                        <span class="navbar-text">
-                            <a class="nav-link my-2 my-sm-0 btn btn-primary text-uppercase btn__action btn__outside--menu" href="#">Cotice ahora!!!</a>
-                        </span>
-                    </div-->
+                    
                 </nav>
 
             </div>

@@ -15,29 +15,19 @@
         <div class="row">
             <div class="col-md-6">
 
-                    <?php if( has_nav_menu( 'primary' ) ): ?>
-                        <?php # Define zona de menú en el tema 
-                            $args = array(
-                                'theme_location'  => 'primary',                                                                                             # Nombre de la ubicación del tema
-                                'menu_class'      => 'menu navbar navbar-nav d-flex flex-column flex-md-row text-center text-md-left text-uppercase',       # Clases del elemento envuelve los items de la lista: por defecto es el elemento ul
-                                'container'       => 'nav',                                                                                                 # Elemento 'nav' envolverá al elemento que contiene los items de lista (por defecto es un div)
-                                'container_class' => 'menu-main d-flex justify-content-start',                                                              # Clases del elemento que envolverá al elemento que contiente los items de la lista
-                            );  # TO FIX: Solucionar el problema de distancia entre los enlaces
-                            wp_nav_menu( $args );
-                        ?>
-                    <?php else: ?>
-                        No existe
-                    <?php endif; ?>
-
-                <!--nav class="menu-main">
-                    <ul class="menu navbar navbar-nav d-flex flex-column flex-md-row text-center text-md-left text-uppercase">
-                        <li><a class="nav-link" href="#">Nosotros</a></li>
-                        <li><a class="nav-link" href="#">Blog</a></li>
-                        <li><a class="nav-link" href="#">Clases</a></li>
-                        <li><a class="nav-link" href="#">Galería</a></li>
-                        <li><a class="nav-link" href="#">Contacto</a></li>
-                    </ul>  <!-- #menu-main -->
-                <!--/nav>  <!-- .nav -->
+                <?php if( has_nav_menu( 'primary' ) ): ?>
+                    <?php # Define zona de menú en el tema 
+                        $args = array(
+                            'theme_location'  => 'primary',                                                                                             # Nombre de la ubicación del tema
+                            'menu_class'      => 'menu navbar navbar-nav d-flex flex-column flex-md-row text-center text-md-left text-uppercase',       # Clases del elemento envuelve los items de la lista: por defecto es el elemento ul
+                            'container'       => 'nav',                                                                                                 # Elemento 'nav' envolverá al elemento que contiene los items de lista (por defecto es un div)
+                            'container_class' => 'menu-main d-flex justify-content-start',                                                              # Clases del elemento que envolverá al elemento que contiente los items de la lista
+                        );  # TO FIX: Solucionar el problema de distancia entre los enlaces
+                        wp_nav_menu( $args );
+                    ?>
+                <?php else: ?>
+                    No existe
+                <?php endif; ?>
 
             </div>
             <div class="col-md-6">

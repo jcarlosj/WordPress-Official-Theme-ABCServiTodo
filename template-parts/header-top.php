@@ -61,16 +61,6 @@
                         No existe
                     <?php endif; ?>
                 </section>
-                <!--section class="menu-social">
-                    <nav class="btn-toolbar d-flex justify-content-end header__top" role="toolbar" aria-label="Toolbar with button groups"">
-                        <ul class=" btn-group nav menu-social" role="group" aria-label="Second group">
-                            <li class="nav-item"><a class="btn btn-link nav-link" href="https://www.facebook.com"><span class="social--without-text">Facebook</span></span></a></li>
-                            <li class="nav-item"><a class="btn btn-link nav-link" href="https://www.twitter.com"><span class="social--without-text">Twitter</span></a></li>
-                            <li class="nav-item"><a class="btn btn-link nav-link" href="https://www.instagram.com"><span class="social--without-text">Instagram</span></a></li>
-                            <li class="nav-item"><a class="btn btn-link nav-link" href="https://www.pinterest.com"><span class="social--without-text">Pinterest</span></a></li>
-                        </ul>
-                    </nav>
-                </section-->
 
             </div> 
         </div>    
