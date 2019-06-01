@@ -44,7 +44,9 @@ if ( ! function_exists( 'abc_servitodo_setup' ) ) :
 
 		// This theme uses wp_nav_menu() in one location.
 		register_nav_menus( array(
-			'menu-1' => esc_html__( 'Primary', 'abc-servitodo' ),
+			'primary'   => esc_html__( 'Primary Menu', 'abc-servitodo' ),
+			'secondary' => esc_html__( 'Secondary Menu', 'abc-servitodo' ),
+			'social'    => esc_html__( 'Social Networks Menu', 'abc-servitodo' )
 		) );
 
 		/*
@@ -82,6 +84,55 @@ if ( ! function_exists( 'abc_servitodo_setup' ) ) :
 	}
 endif;
 add_action( 'after_setup_theme', 'abc_servitodo_setup' );
+
+/** Modifica atributos del elemento a del menú secundario
+ * 
+ * 	1. Agrega la clase 'btn btn-link nav-link' al elemento a del menú principal
+*/
+function abc_servitodo_modify_link_classes_menu( $attrs, $items, $args ) {
+
+	#echo '<pre><code>'; var_dump( $args ); echo '</code></pre>'; exit();
+
+	# Valida la existencia de una ubicación de menú llamada 'primary'
+    if( 'primary' === $args -> theme_location ) {
+        $attrs[ 'class' ] = 'btn btn-link nav-link';
+	}
+    # Valida la existencia de una ubicación de menú llamada 'primary'
+    if( 'secondary' === $args -> theme_location ) {
+        $attrs[ 'class' ] = 'btn btn-link nav-link';
+	}
+    # Valida la existencia de una ubicación de menú llamada 'social'
+    if( 'social' === $args -> theme_location ) {
+        $attrs[ 'class' ] = 'btn btn-link nav-link link-social';
+    }
+    return $attrs;
+}
+add_filter( 'nav_menu_link_attributes', 'abc_servitodo_modify_link_classes_menu', 10, 3 );
+
+/** Modifica atributos del elemento li del menú secundario
+ * 
+ * 		1. Elimina todas las clases del elemento li 
+ * 		2. Agrega la clase 'nav-item' al elemento li 
+*/
+function abc_servitodo_modify_item_classes_menu( $classes, $item, $args, $depth ) {
+	# Valida la existencia de una ubicación de menú llamada 'primary'
+	if( 'primary' === $args -> theme_location ) {
+		unset( $classes );			# Elimina todas las clases del Array
+		$classes[] = '';			# Agrega el nombre de la clase que deseamos agregar
+	}
+    # Valida la existencia de una ubicación de menú llamada 'secondary'
+    if( 'secondary' === $args -> theme_location ) {
+		unset( $classes );			# Elimina todas las clases del Array
+		$classes[] = 'nav-item';	# Agrega el nombre de la clase que deseamos agregar
+	}
+	# Valida la existencia de una ubicación de menú llamada 'social'
+	if( 'social' === $args -> theme_location ) {
+		unset( $classes );			# Elimina todas las clases del Array
+		$classes[] = 'nav-item';	# Agrega el nombre de la clase que deseamos agregar
+	}
+	return $classes;
+}
+add_filter( 'nav_menu_css_class', 'abc_servitodo_modify_item_classes_menu', 10, 4 ); 
 
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
