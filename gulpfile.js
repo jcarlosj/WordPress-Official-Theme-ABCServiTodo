@@ -12,7 +12,7 @@ const sass = require( 'gulp-sass' ),                            // Gulp plugin p
 
 // Complementos relacionados con JavaScript
 const uglify = require( 'gulp-uglify' ), 						// Minimiza archivos JavaScript.
-			babel = require( 'gulp-babel' ); 							// Compila "ESNext" para hacer JavaScript complatible con los navegadores. 
+	  babel = require( 'gulp-babel' ); 							// Compila "ESNext" para hacer JavaScript complatible con los navegadores. 
 			
 // Complementos relacionados con imagenes			
 const imagemin = require( 'gulp-imagemin' );										// Minimiza y optimiza imagenes.			
@@ -25,11 +25,11 @@ const rename = require( 'gulp-rename' ),                        // Renombra arch
       notify = require( 'gulp-notify' ),                        // Te envía un mensaje de notificación.
       browserSync = require( 'browser-sync' ) .create(),        // Recarga el navegador e inyecta CSS. Prueba del navegador sincronizada que ahorra tiempo.
       plumber = require( 'gulp-plumber' ),                      // Prevenga la rotura de la tubería causada por errores de los complementos de Gulp.
-			beep = require( 'beepbeep' ),
-			del = require( 'del' ),
-			remember = require( 'gulp-remember' ),                    // Recuerda todos los archivos que ha visto de nuevo en la transmisión.
-			stripdebug = require( 'gulp-strip-debug' ),				// Eliminar las declaraciones de consola, alerta y depurador del código JavaScript. Útil para asegurarse de que no dejó ningún registro en el código de producción.
-			cache = require( 'gulp-cache' ); 													// Archivos de caché en secuencia para su uso posterior.
+	  beep = require( 'beepbeep' ),
+	  del = require( 'del' ),
+	  remember = require( 'gulp-remember' ),                    // Recuerda todos los archivos que ha visto de nuevo en la transmisión.
+	  stripdebug = require( 'gulp-strip-debug' ),				// Eliminar las declaraciones de consola, alerta y depurador del código JavaScript. Útil para asegurarse de que no dejó ningún registro en el código de producción.
+	  cache = require( 'gulp-cache' ); 													// Archivos de caché en secuencia para su uso posterior.
 
 /**
  * >> Archivo de configuración de Gulp para WordPress <<
@@ -58,7 +58,7 @@ const config = {
 
 	// Opciones de Proyecto.
 	project: {
-		url: 'http://localhost/projects/abcservitodo.wp/',    // URL del proyecto local de su sitio de WordPress que ya se está ejecutando. Podría ser algo como wpgulp.local o localhost: 3000 dependiendo de la configuración de WordPress local.
+		url: 'http://localhost/projects/abcservitodo.dev/',    // URL del proyecto local de su sitio de WordPress que ya se está ejecutando. Podría ser algo como wpgulp.local o localhost: 3000 dependiendo de la configuración de WordPress local.
 		path: './',                                           // Tema/URL del complemento. Déjelo como está, ya que nuestro gulpfile.js vive en la carpeta raíz.
 		browserAutoOpen: true,
 		injectChanges: true,
@@ -240,6 +240,17 @@ const browsersync = done => {
 		injectChanges: config .project .injectChanges,
 		watchEvents: [ 'change', 'add', 'unlink', 'addDir', 'unlinkDir' ]
 	});
+
+	watch( './src/assets/sass/**/.scss', series( 'styles' ) ); 
+
+	watch([ config .project .files .images. src ], series( 'images' ) ) .on( 'change', browserSync .reload );    
+	watch([ config .project .files .php ]) .on( 'change', browserSync .reload );    
+	watch([ './*.html' ]) .on( 'change', browserSync .reload );    
+	
+	// To Fix: No regarga navegadores cuando cambia './style.css', './style.min.css'
+	watch([ './style.min.css' ]) .on( 'change', browserSync .reload );
+
+	console .log( '  ✅ Watching Server!' );
 	done();
 };
 
@@ -384,6 +395,7 @@ task( 'jsLib', () => {
  */ 
 
 task( 'images', () => {
+	
 	return src( config .project .files .images .src, { since: lastRun( 'images' ) } )
 		.pipe(
 			cache(
@@ -399,6 +411,7 @@ task( 'images', () => {
 		)
 		.pipe( dest( config .project .files .images .dest ) )
 		.pipe( notify({ message: '  ✅ Imagenes optimizadas con éxito!! ', onLast: true }) );
+		
 });
 
 /**
@@ -407,20 +420,18 @@ task( 'images', () => {
  */
 task(
 	'default',
-	series(
-		series( 
-			paths, 
-			series( 'images' ),
-			parallel( 'jsLib', 'styles-lib' ), 
-			series( 'jsFiles', 'styles' ), 
-			browsersync, 
-			() => {
-				watch( config .project .files .php, reload );                  					// Recargar archivos PHP que cambien.
-				watch( config .project .files .scss, series( 'styles', reload ) ); // Recargar archivos SCSS que cambien.
-				watch( config .project .files .js, series( 'jsFiles', reload ) );	// Recargar archivos JavaScript que cambien.
-				watch( config .project .files .images .src, series( 'images', reload ) );	// Recargar archivos de Imagen que cambien.
-			}
-		)
+	series( 
+		paths, 
+		'images',
+		parallel( 'jsLib', 'styles-lib' ), 
+		series( 'jsFiles', 'styles' ), 
+		browsersync, 
+		//() => {
+		//	watch( config .project .files .php, reload );                  					// Recargar archivos PHP que cambien.
+		//	watch( config .project .files .scss, series( 'styles', reload ) ); // Recargar archivos SCSS que cambien.
+		//	watch( config .project .files .js, series( 'jsFiles', reload ) );	// Recargar archivos JavaScript que cambien.
+		//	watch( config .project .files .images .src, series( 'images', reload ) );	// Recargar archivos de Imagen que cambien.
+		//}
 	)
 );
 
