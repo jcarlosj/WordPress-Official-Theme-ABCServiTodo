@@ -147,6 +147,11 @@ function abc_servitodo_scripts() {
 add_action( 'wp_enqueue_scripts', 'abc_servitodo_scripts' );
 
 /**
+ * Customizing lists of publications and pages in the WordPress administration area
+ */
+require get_template_directory() . '/inc/custom-admin-lists-of-posts-and-pages.php';
+
+/**
  * Implement the Custom Header feature.
  */
 require get_template_directory() . '/inc/custom-header.php';
