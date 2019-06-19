@@ -59,7 +59,7 @@ const config = {
 	// Opciones de Proyecto.
 	project: {
 		url: 'http://localhost/projects/abcservitodo.dev/',    // URL del proyecto local de su sitio de WordPress que ya se está ejecutando. Podría ser algo como wpgulp.local o localhost: 3000 dependiendo de la configuración de WordPress local.
-		path: './',                                           // Tema/URL del complemento. Déjelo como está, ya que nuestro gulpfile.js vive en la carpeta raíz.
+		path: './',                                            // Tema/URL del complemento. Déjelo como está, ya que nuestro gulpfile.js vive en la carpeta raíz.
 		browserAutoOpen: true,
 		injectChanges: true,
 
@@ -141,7 +141,7 @@ let libs = {
  * @param Mixed err
  */
 const errorHandler = r => {
-	notify .onError( '\n\n❌  > ERROR: <%= error .message %>\n' )( r );
+	notify .onError( '❌  > ERROR: <%= error .message %> ' )( r );
 	beep();
 
 	// this .emit( 'end' );
@@ -187,7 +187,7 @@ task( 'styles', () => {
 		.pipe( dest( config .style .main .dest ) )
 		.pipe( filter( config .style .filter ) )                           // Filtrado de la secuencia a sólo archivos css.
 		.pipe( browserSync .stream() )                          // Vuelve a cargar style.min.css si está en cola.
-		.pipe( notify({ message: '\n\n✅ > Sass — CSS Generados con éxito!\n', onLast: true }) );
+		.pipe( notify({ message: '✅ > Sass — CSS Generados con éxito! ', onLast: true }) );
 });   
 
 /**
@@ -224,7 +224,7 @@ task( 'styles-lib', () => {
 		.pipe( minifycss({ maxLineLen: 10 }) )
 		.pipe( dest( libs .dest ) )
 		.pipe( filter( config .style .filter ) )                // Filtrado de la secuencia a sólo archivos css.
-		.pipe( notify({ message: '\n\n✅ > Sass — Libs Generados con éxito!\n', onLast: true }) );
+		.pipe( notify({ message: '✅ > Sass — Libs Generados con éxito! ', onLast: true }) );
 });
 /**
  * >> Task: `browser-sync`. <<
@@ -283,7 +283,7 @@ const paths = done => {
 task( 'copy_sass', () => {
     return src( config .underscore .move .sass .src, { allowEmpty: true } )
 		.pipe( dest( config .underscore .move .sass .dest ) )
-		.pipe( notify({ message: '\n\n✅ > Underscore — Mueve directorio "sass" con éxito!\n', onLast: true }) );
+		.pipe( notify({ message: '✅ > Underscore — Mueve directorio "sass" con éxito! ', onLast: true }) );
 });
 
 /**
@@ -297,7 +297,7 @@ task( 'copy_sass', () => {
 task( 'copy_js', () => {
     return src( config .underscore .move .js .src, { allowEmpty: true } )
 		.pipe( dest( config .underscore .move .js .dest ) )
-		.pipe( notify({ message: '\n\n✅ > Underscore — Mueve directorio "js" con éxito!\n', onLast: true }) );
+		.pipe( notify({ message: '✅ > Underscore — Mueve directorio "js" con éxito! ', onLast: true }) );
 });
 
 /**
@@ -349,7 +349,7 @@ task( 'jsFiles', () => {
 		.pipe( rename( { suffix: '.min' } ) )
 		.pipe( lineec() )   															// Terminaciones de línea consistentes para sistemas no UNIX.
 		.pipe( dest( config .js .dest ) )
-		.pipe( notify({ message: '\n\n✅ > ES8 — JS Generados con éxito!\n', onLast: true }) );
+		.pipe( notify({ message: '✅ > ES8 — JS Generados con éxito! ', onLast: true }) );
 });
 
 /**
@@ -386,7 +386,7 @@ task( 'jsLib', () => {
 		.pipe( rename( { suffix: '.min' } ) )
 		.pipe( lineec() )   															// Terminaciones de línea consistentes para sistemas no UNIX.
 		.pipe( dest( libs .dest ) )
-		.pipe( notify({ message: '\n\n✅  > ES8 —  Libs Generados con éxito!!\n', onLast: true }) );
+		.pipe( notify({ message: '✅  > ES8 —  Libs Generados con éxito!! ', onLast: true }) );
 });
 
 /**
