@@ -9,9 +9,12 @@
 
 ?>
 
+<?php 
+    $page = get_page_by_path( 'servicios' );
+?>
 <hgroup>
     <h3>Qué podemos ofrecer</h3>
-    <h2>Nuestros servicios Premium más destacados</h2>
+    <h2><?php echo get_the_title( $page ); ?></h2>
 </hgroup>
 
 <div id="carousel-services" class="carousel slide" data-ride="carousel">
@@ -19,7 +22,7 @@
         <?php
             $loop = 0;
             $args = array(
-                'post_parent'    => '48',   // ID of your parent page
+                'post_parent'    => $page -> ID,   // ID of your parent page
                 'post_type' => 'page',
                 'posts_per_page' => -1,
                 'order'          => 'ASC',
