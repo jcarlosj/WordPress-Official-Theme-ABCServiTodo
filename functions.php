@@ -7,6 +7,9 @@
  * @package ABC_ServiTodo
  */
 
+/** Integración del Plugin CMB2 al Tema */
+require_once dirname( __FILE__ ) .'/integrated-plugins/example-functions.php';      # Archivo de campos de ejemplo de CMB2
+
 if ( ! function_exists( 'abc_servitodo_setup' ) ) :
 	/**
 	 * Sets up theme defaults and registers support for various WordPress features.
