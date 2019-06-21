@@ -45,7 +45,9 @@
                 <div class="card">
                     <a href="<?php the_permalink(); ?>">
                         <img src="<?php echo get_the_post_thumbnail_url( null, 'slider-us' ); ?>" class="card--image card-img-top img-fluid mx-auto d-block" alt="<?php the_title(); ?>" >
-                        <img class="card--icon" src="<?php echo get_template_directory_uri() .'/dist/assets/images/services/1.svg'; ?>" class="card-img-top img-fluid mx-auto d-block" alt="ico1">
+                        <?php if( get_post_meta( get_the_ID(), 'page_icon', true ) != null ) :?>
+                            <img class="card--icon" src="<?php echo get_post_meta( get_the_ID(), 'page_icon', true ); ?>" class="card-img-top img-fluid mx-auto d-block" alt="<?php the_title(); ?>">
+                        <?php endif; ?>
                         <div class="card-body">            
                             <h5 class="card-title"><?php the_title(); ?></h5>
                         </div>

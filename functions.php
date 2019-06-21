@@ -8,7 +8,9 @@
  */
 
 /** Integración del Plugin CMB2 al Tema */
+//require_once __DIR__ . '/integrated-plugins/cmb2/init.php';
 require_once dirname( __FILE__ ) .'/integrated-plugins/example-functions.php';      # Archivo de campos de ejemplo de CMB2
+require_once dirname( __FILE__ ) .'/inc/custom-fields.php';							# Archivo de configuración de campos personalizados de CMB2 (v2.6.0) disponibles para el tema.
 
 if ( ! function_exists( 'abc_servitodo_setup' ) ) :
 	/**
