@@ -20,48 +20,47 @@
                         <h3>Por que elegirnos</h3>
                         <h2>Cómo trabajamos</h2>
                     </hgroup>
+                    
                     <div class="tabs">
                         <div class="tab">
                             <input type="radio" id="rd0" name="rd">
                             <label for="rd0" class="tab-close">Cerrar &times;</label>
                         </div>
-                        <div class="tab">
-                            <input type="radio" id="rd1" name="rd">
-                            <label class="tab-label" for="rd1"><i class="fas fa-check"></i>Item 1</label>
-                            <div class="tab-content">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eos, facilis.
-                            </div>
-                        </div>
-                        <div class="tab">
-                            <input type="radio" id="rd2" name="rd">
-                            <label class="tab-label" for="rd2"><i class="fas fa-check"></i>Item 2</label>
-                            <div class="tab-content">
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil, aut.
-                            </div>
-                        </div>
-                        <div class="tab">
-                            <input type="radio" id="rd3" name="rd">
-                            <label class="tab-label" for="rd3"><i class="fas fa-check"></i>Item 3</label>
-                            <div class="tab-content">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eos, facilis.
-                            </div>
-                        </div>
-                        <div class="tab">
-                            <input type="radio" id="rd4" name="rd">
-                            <label class="tab-label" for="rd4"><i class="fas fa-check"></i>Item 4</label>
-                            <div class="tab-content">
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil, aut.
-                            </div>
-                        </div>
-                        <div class="tab">
-                            <input type="radio" id="rd5" name="rd">
-                            <label class="tab-label" for="rd5"><i class="fas fa-check"></i>Item 5</label>
-                            <div class="tab-content">
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil, aut.
-                            </div>
-                        </div>
+                        <?php 
+                            $loop = 0;
+                            $entries = get_post_meta( get_the_ID(), 'front_page_group', true ); 
+                        
+                            if( $entries ) :
+                                // var_dump( $entries ); exit;
+                                
+                                foreach ( (array) $entries as $key => $entry ) :
+                                    $loop++;
+                        ?>
+                                    <div class="tab">
+                                        <input type="radio" id="rd<?php echo $loop; ?>" name="rd">
+                                        <label class="tab-label" for="rd<?php echo $loop; ?>">
+                                            <i class="fas fa-check"></i>
+                                            <?php 
+                                                if ( isset( $entry[ 'question' ] ) ) : 
+                                                    echo $entry[ 'question' ];
+                                                endif;    
+                                            ?>
+                                        </label>
+                                        <div class="tab-content">
+                                            <?php 
+                                                if ( isset( $entry[ 'answer' ] ) ) : 
+                                                    echo $entry[ 'answer' ];
+                                                endif;    
+                                            ?>
+                                        </div>
+                                    </div>
+                        <?php            
+                                endforeach;
+                            endif;                            
+                        ?>
+                        
                     </div>
-                    
+
                 </section>
 
             </div>
