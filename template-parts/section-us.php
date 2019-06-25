@@ -16,11 +16,22 @@
             <div class="col-12 col-md-6">
 
                 <section class="us__choose-us">
-                    <hgroup>
-                        <h3>Por que elegirnos</h3>
-                        <h2>Cómo trabajamos</h2>
-                    </hgroup>
-                    
+                    <?php # Titulos de la sección
+                        $headers = [
+                            "title" => get_post_meta( get_the_ID(), 'front_page_title_1', true ),
+                            "subtitle" => get_post_meta( get_the_ID(), 'front_page_subtitle_1', true )
+                        ];
+
+                        if( ! empty( $headers[ 'title' ] ) || ! empty( $headers[ 'subtitle' ] ) ) :
+                    ?>
+                            <hgroup>
+                                <h3><?php echo $headers[ 'subtitle' ]; ?></h3>
+                                <h2><?php echo $headers[ 'title' ]; ?></h2>
+                            </hgroup>
+                    <?php
+                        endif;
+                    ?>
+
                     <div class="tabs">
                         <?php 
                             $loop = 0;
@@ -69,10 +80,21 @@
             <div class="col-12 col-md-6">
 
                 <section class="us__we-do-it">
-                    <hgroup>
-                        <h3>Cotice ahora</h3>
-                        <h2>Cuentenos que desea y trabajemos juntos</h2>
-                    </hgroup>
+                    <?php # Titulos de la sección
+                        $headers = [
+                            "title" => get_post_meta( get_the_ID(), 'front_page_title_2', true ),
+                            "subtitle" => get_post_meta( get_the_ID(), 'front_page_subtitle_2', true )
+                        ];
+
+                        if( ! empty( $headers[ 'title' ] ) || ! empty( $headers[ 'subtitle' ] ) ) :
+                    ?>
+                            <hgroup>
+                                <h3><?php echo $headers[ 'subtitle' ]; ?></h3>
+                                <h2><?php echo $headers[ 'title' ]; ?></h2>
+                            </hgroup>
+                    <?php
+                        endif;
+                    ?>
                     <?php 
                         # Valida si existe la imagen
                         if( get_post_meta( get_the_ID(), 'front_page_image', true ) != null ) :

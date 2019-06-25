@@ -7,13 +7,23 @@
         /** Metabox para todos los 'post' tipo 'page' */
         $cmb_page = new_cmb2_box( array(
             'id'            => $prefix .'_metabox',
-            'title'         => esc_html__( 'Icono de página', 'abc-servitodo' ),
+            'title'         => esc_html__( 'Personalización de página', 'abc-servitodo' ),
             'object_types'  => array( 'page' ), // Post type
         ) );
+
+        /** Campo Texto  */
+        $cmb_page -> add_field( array(
+            'name'    => 'Sub-título',
+            'desc'    => 'Sub-título para la página (optional)',
+            'default' => '',
+            'id'      => $prefix .'_subtitle',
+            'type'    => 'text',
+        ) );
+
         /** Campo Imagen  */
         $cmb_page -> add_field( array(
-                'name' => esc_html__( 'Imagen:', 'abc-servitodo' ),
-                'desc' => esc_html__( 'Sube una imagen o ingresa una URL (preferiblemente png transparente cuadrado o svg)', 'abc-servitodo' ),
+                'name' => esc_html__( 'Ícono de la página:', 'abc-servitodo' ),
+                'desc' => esc_html__( 'Sube un ícono para la página o ingresa su URL, preferiblemente un PNG transparente, cuadrado. (opcional)', 'abc-servitodo' ),
                 'id'   => $prefix . '_icon',
                 'type' => 'file',
                 'text' => array(
@@ -47,6 +57,24 @@
             'title'         => esc_html__( 'Sección Nosotros - Acordeón', 'abc-servitodo' ),
             'show_on'       => array( 'id' => $home_id ),     # Only show on the "home" page
             'object_types'  => array( 'page' ), // Post type
+        ) );
+
+        /** Campo Texto  */
+        $cmb_front_page_part_1 -> add_field( array(
+            'name'    => 'Título',
+            'desc'    => 'Título para la sección (optional)',
+            'default' => '',
+            'id'      => $prefix .'_title_1',
+            'type'    => 'text',
+        ) );
+
+        /** Campo Texto  */
+        $cmb_front_page_part_1 -> add_field( array(
+            'name'    => 'Sub-título',
+            'desc'    => 'Sub-título para la sección (optional)',
+            'default' => '',
+            'id'      => $prefix .'_subtitle_1',
+            'type'    => 'text',
         ) );
 
         /** Agrupa campos */ 
@@ -89,6 +117,24 @@
             'title'         => esc_html__( 'Sección Nosotros - Imagen', 'abc-servitodo' ),
             'show_on'       => array( 'id' => $home_id ),     # Only show on the "home" page
             'object_types'  => array( 'page' ), // Post type
+        ) );
+
+        /** Campo Texto  */
+        $cmb_front_page_part_2 -> add_field( array(
+            'name'    => 'Título',
+            'desc'    => 'Título para la sección (optional)',
+            'default' => '',
+            'id'      => $prefix .'_title_2',
+            'type'    => 'text',
+        ) );
+
+        /** Campo Texto  */
+        $cmb_front_page_part_2 -> add_field( array(
+            'name'    => 'Sub-título',
+            'desc'    => 'Sub-título para la sección (optional)',
+            'default' => '',
+            'id'      => $prefix .'_subtitle_2',
+            'type'    => 'text',
         ) );
 
         /** Campo de 'file' para cargar imagen */ 
