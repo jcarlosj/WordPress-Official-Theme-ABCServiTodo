@@ -20,18 +20,36 @@
             </div>
             <div class="col-12 col-md-8 d-none d-md-block">
                 <ul class="info-group list-inline d-flex justify-content-end">
-                    <li class="info list-inline-item">
-                        <h3>Escribanos a</h3>
-                        <p>info@correo.co</a>
-                    </li>
-                    <li class="info list-inline-item">
-                        <h3>Llamenos a</h3>
-                        <p>0800.123.456789</a>
-                    </li>
-                    <li class="info list-inline-item">
-                        <h3>Horario</h3>
-                        <p>L - V | 09:00 - 19:00</p>
-                    </li>
+                    <?php 
+                        $email = get_post_meta( get_the_ID(), 'contact_email', true );
+                        $phone = get_post_meta( get_the_ID(), 'contact_phone', true );
+                        $hours = get_post_meta( get_the_ID(), 'contact_business_hours', true );
+
+                        if( ! empty( $email ) ) :
+                    ?>
+                        <li class="info list-inline-item">
+                            <h3>Escribanos a</h3>
+                            <p><?php echo $email; ?></a>
+                        </li>
+                    <?php 
+                        endif; 
+                        if( ! empty( $phone ) ) :
+                    ?>
+                        <li class="info list-inline-item">
+                            <h3>Llamenos a</h3>
+                            <p><?php echo $phone; ?></a>
+                        </li>
+                    <?php 
+                        endif; 
+                        if( ! empty( $hours ) ) :
+                    ?>    
+                        <li class="info list-inline-item">
+                            <h3>Horario</h3>
+                            <p><?php echo $hours; ?></p>
+                        </li>
+                    <?php 
+                        endif;     
+                    ?>    
                 </ul>
             </div>
         </div>

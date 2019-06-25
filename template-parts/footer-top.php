@@ -29,14 +29,43 @@
                 </div>
             </div>
             <div class="col-md-4 my-3 my-md-0">
-                <hgroup>
-                    <h3>Para estar en contacto</h3>
-                    <h2>Nuestros datos</h2>
-                </hgroup>
+                <?php # Titulos de la sección
+                    $headers = [
+                        "title" => get_post_meta( get_the_ID(), 'contact_title', true ),
+                        "subtitle" => get_post_meta( get_the_ID(), 'contact_subtitle', true )
+                    ];
+
+                    if( ! empty( $headers[ 'title' ] ) || ! empty( $headers[ 'subtitle' ] ) ) :
+                ?>
+                        <hgroup>
+                            <h3><?php echo $headers[ 'subtitle' ]; ?></h3>
+                            <h2><?php echo $headers[ 'title' ]; ?></h2>
+                        </hgroup>
+                <?php
+                    endif;
+                ?>
                 <ul class="info-site">
-                    <li><strong>Teléfono: </strong> +1 123 456 789</li>
-                    <li><strong>Correo: </strong> info@correo.co</li>
-                    <li><strong>Dirección: </strong> Avenida Siempre Viva, Springfield USA</li>
+                    <?php 
+                        $email = get_post_meta( get_the_ID(), 'contact_email', true );
+                        $phone = get_post_meta( get_the_ID(), 'contact_phone', true );
+                        $address = get_post_meta( get_the_ID(), 'contact_business_hours', true );
+
+                        if( ! empty( $email ) ) :
+                    ?>
+                    <li><strong>Teléfono: </strong><?php echo $phone; ?></li>
+                    <?php 
+                        endif; 
+                        if( ! empty( $phone ) ) :
+                    ?>
+                    <li><strong>Correo: </strong><?php echo $email; ?></li>
+                    <?php 
+                        endif; 
+                        if( ! empty( $phone ) ) :
+                    ?>
+                    <li><strong>Dirección: </strong><?php echo $address; ?></li>
+                    <?php 
+                        endif; 
+                    ?>
                 </ul>
             </div>
             <div class="col-md-4 my-3 my-md-0">

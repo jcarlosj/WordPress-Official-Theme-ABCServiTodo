@@ -167,3 +167,79 @@
         
     }
     add_action( 'cmb2_admin_init', 'abc_servitodo_register_metabox_front_page' );
+
+    function abc_servitodo_register_metabox_contact_information () {
+        $prefix = 'contact';
+        $home_id = get_option( 'page_on_front' );       # Get ID Page
+
+        /** Metabox para todos los 'post' tipo 'page' */
+        $cmb_contact_information = new_cmb2_box( array(
+            'id'            => $prefix .'_metabox',
+            'title'         => esc_html__( 'Información de contacto', 'abc-servitodo' ),
+            'show_on'       => array( 'id' => $home_id ),     # Only show on the "home" page
+            'object_types'  => array( 'page' ), // Post type
+        ) );
+
+        /** Campo Título  */
+        $cmb_contact_information -> add_field( array(
+            'name' => 'Datos generales',
+            'desc' => 'Todos los datos registradosen los siguientes campos estarán disponibles para ser mostrados en la plantilla (solo cuando el dato es diligenciado en su respectivo campo)',
+            'type' => 'title',
+            'id'   => '_title'
+        ) );
+
+        /** Campo Texto  */
+        $cmb_contact_information -> add_field( array(
+            'name'    => 'Título',
+            'desc'    => 'Título para sección información de contacto (optional)',
+            'default' => '',
+            'id'      => $prefix .'_title',
+            'type'    => 'text',
+        ) );
+
+        /** Campo Texto  */
+        $cmb_contact_information -> add_field( array(
+            'name'    => 'Sub-título',
+            'desc'    => 'Sub-titulo para sección información de contacto (optional)',
+            'default' => '',
+            'id'      => $prefix .'_subtitle',
+            'type'    => 'text',
+        ) );
+
+        /** Campo Texto  */
+        $cmb_contact_information -> add_field( array(
+            'name'    => 'Correo electronico',
+            'desc'    => 'Correo electronico de contacto (optional)',
+            'default' => '',
+            'id'      => $prefix .'_email',
+            'type'    => 'text',
+        ) );
+
+        /** Campo Texto  */
+        $cmb_contact_information -> add_field( array(
+            'name'    => 'Teléfono',
+            'desc'    => 'Número de teléfono de contacto (optional)',
+            'default' => '',
+            'id'      => $prefix .'_phone',
+            'type'    => 'text',
+        ) );
+
+        /** Campo Texto  */
+        $cmb_contact_information -> add_field( array(
+            'name'    => 'Horario',
+            'desc'    => 'Horario de atención al cliente (optional)',
+            'default' => '',
+            'id'      => $prefix .'_business_hours',
+            'type'    => 'text',
+        ) );
+
+        /** Campo Texto  */
+        $cmb_contact_information -> add_field( array(
+            'name'    => 'Dirección',
+            'desc'    => 'Dirección física del establecimiento (optional)',
+            'default' => '',
+            'id'      => $prefix .'_address',
+            'type'    => 'text',
+        ) );
+    }
+    add_action( 'cmb2_admin_init', 'abc_servitodo_register_metabox_contact_information' );

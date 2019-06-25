@@ -108,26 +108,35 @@
             </div>
         </div>
 
-        <div class="row justify-content-center align-content-center">
-            <div class="col-12 col-md-8 col-lg-10">
+        <?php
+            $phone = get_post_meta( get_the_ID(), 'contact_phone', true );
 
-                <section class="us__call-us">
-                    
-                    <div class="row justify-content-between align-items-center">
-                        <div class="col-12 col-md-6">
-                            <hgroup>
-                                <h3>Llamenos a</h3>
-                                <h2>0180009876231</h2>
-                            </hgroup>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <a class="nav-link my-2 my-sm-0 btn btn-primary btn__action" href="#">Cotice ahora!</a>
-                        </div>
-                    </div>
-                </section>
+            if( ! empty( $phone ) ) : 
+        ?>
+            <div class="row justify-content-center align-content-center">
+                <div class="col-12 col-md-8 col-lg-10">
 
+                    <section class="us__call-us">
+                        
+                        <div class="row justify-content-between align-items-center">
+                            <div class="col-12 col-md-6">
+                                
+                                <hgroup>
+                                    <h3>Llamenos a</h3>
+                                    <h2><?php echo $phone; ?></h2>
+                                </hgroup>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <a class="nav-link my-2 my-sm-0 btn btn-primary btn__action" href="#">Cotice ahora!</a>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>    
             </div>
-        </div>
+        <?php
+            endif;
+        ?>
 
     </section>
 </div>
