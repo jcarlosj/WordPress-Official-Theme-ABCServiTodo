@@ -52,7 +52,13 @@ if ( ! function_exists( 'abc_servitodo_setup' ) ) :
 			420,          # Alto de la imagen en pixeles
 			370,          # Ancho de la imagen en pixeles
 			true          # True si deseamos que puedo de la redimensión se haga cropping o recorte de la imagen
-		  );
+		);
+		add_image_size(
+			'section-us',   # Nombre del tamaño de imagen que hemos registrado
+			540,          # Alto de la imagen en pixeles
+			960,          # Ancho de la imagen en pixeles
+			true          # True si deseamos que puedo de la redimensión se haga cropping o recorte de la imagen
+		);
 
 		// This theme uses wp_nav_menu() in one location.
 		register_nav_menus( array(

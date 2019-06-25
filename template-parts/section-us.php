@@ -22,16 +22,18 @@
                     </hgroup>
                     
                     <div class="tabs">
-                        <div class="tab">
-                            <input type="radio" id="rd0" name="rd">
-                            <label for="rd0" class="tab-close">Cerrar &times;</label>
-                        </div>
                         <?php 
                             $loop = 0;
                             $entries = get_post_meta( get_the_ID(), 'front_page_group', true ); 
-                        
+                         
                             if( $entries ) :
                                 // var_dump( $entries ); exit;
+                        ?>
+                                <div class="tab">
+                                    <input type="radio" id="rd0" name="rd">
+                                    <label for="rd0" class="tab-close">Cerrar &times;</label>
+                                </div>
+                        <?php       
                                 
                                 foreach ( (array) $entries as $key => $entry ) :
                                     $loop++;
@@ -71,7 +73,14 @@
                         <h3>Cotice ahora</h3>
                         <h2>Cuentenos que desea y trabajemos juntos</h2>
                     </hgroup>
-                    <img class="img-fluid" src="<?php echo get_template_directory_uri() . '/dist/assets/images/roof.jpg'; ?>" alt="Lo hacemos por UD">    
+                    <?php 
+                        # Valida si existe la imagen
+                        if( get_post_meta( get_the_ID(), 'front_page_image', true ) != null ) :
+                            $id_image = get_post_meta( get_the_ID(), 'front_page_image_id', true );     # Obtiene el ID de la imagen.
+                            $url_image = wp_get_attachment_image( $id_image, 'section-us' );            # Obtiene el URL, asigna tamaño.
+                            echo $url_image;
+                        endif; 
+                    ?>
                 </section>  
 
             </div>
