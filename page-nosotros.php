@@ -34,62 +34,132 @@ get_header();
 				endwhile; // End of the loop.
 			?>
 
-			<section class="business-mission">
-				<div class="container">
+			<?php # Seccion business-mission
+				$title 	  = abc_servitodo_cmb2_get_field_value( get_the_ID(), 'page_nosotros_mision_title' );
+				$subtitle = abc_servitodo_cmb2_get_field_value( get_the_ID(), 'page_nosotros_mision_subtitle' );
+				$image    = abc_servitodo_cmb2_get_field_value( get_the_ID(), 'page_nosotros_mision_image' );
+				$content  = abc_servitodo_cmb2_get_field_value( get_the_ID(), 'page_nosotros_mision_wysiwyg' );
 
-					<div class="row">
-						<div class="col-12 col-md-6 content">
-							<hgroup>
-								<h3>Nuestra</h3>
-								<h2>Misión</h2>
-							</hgroup>
-							<p>Pellentesque est nisi, commodo at felis non, condimentum sagittis eros. Vestibulum facilisis odio orci, eget venenatis orci imperdiet sit amet. In ornare molestie egestas. Nam aliquet sit amet sem nec efficitur. Pellentesque id tincidunt odio.</p>
-							<p>Modi alias exercitationem, cupiditate corrupti, dolor vel eaque consequatur accusamus officiis similique distinctio, nostrum et! Nihil aliquam iure ipsa porro? Labore, consequatur!</p>
+				if( $title[ 'exists' ] || $subtitle[ 'exists' ] || $image[ 'exists' ] || $content[ 'exists' ] ) :
+			?>
+		
+				<section class="business-mission">
+					<div class="container">
+
+						<div class="row">
+							<div class="col-12 col-md-6 content">
+								<?php if( $title[ 'exists' ] || $subtitle[ 'exists' ] ) : ?>
+									<hgroup>
+										<h3><?php echo $subtitle[ 'value' ] ?></h3>
+										<h2><?php echo $title[ 'value' ]; ?></h2>
+									</hgroup>
+								<?php
+									endif;
+									if( $content[ 'exists' ] ) :
+										echo $content[ 'value' ];
+									endif; 
+								?>	
+							</div>
+							<?php if( $image[ 'exists' ] ) : ?>
+								<div class="col-12 col-md-6 image">
+									<?php
+										$id_image = get_post_meta( get_the_ID(), 'page_nosotros_mision_image_id', true );   # Obtiene el ID de la imagen.
+										$tag_image = wp_get_attachment_image( $id_image, 'section-page-us' );            		# Obtiene el URL, asigna tamaño.
+										echo $tag_image;
+									?>
+								</div>
+							<?php endif; ?>
 						</div>
-						<div class="col-12 col-md-6 image">
-							<img class="img-fluid" src="<?php echo get_template_directory_uri() .'/dist/assets/images/mision.jpg'; ?>" alt="Misión">
+
+					</div>  
+				</section>
+
+			<?php endif; ?>	
+
+			<?php # Seccion business-mission
+				$title 	  = abc_servitodo_cmb2_get_field_value( get_the_ID(), 'page_nosotros_vision_title' );
+				$subtitle = abc_servitodo_cmb2_get_field_value( get_the_ID(), 'page_nosotros_vision_subtitle' );
+				$image    = abc_servitodo_cmb2_get_field_value( get_the_ID(), 'page_nosotros_vision_image' );
+				$content  = abc_servitodo_cmb2_get_field_value( get_the_ID(), 'page_nosotros_vision_wysiwyg' );
+
+				if( $title[ 'exists' ] || $subtitle[ 'exists' ] || $image[ 'exists' ] || $content[ 'exists' ] ) :
+			?>
+
+				<section class="business-vision">
+					<div class="container">
+
+						<div class="row">
+							<div class="col-12 col-md-6 content">
+								<?php if( $title[ 'exists' ] || $subtitle[ 'exists' ] ) : ?>
+									<hgroup>
+										<h3><?php echo $subtitle[ 'value' ] ?></h3>
+										<h2><?php echo $title[ 'value' ]; ?></h2>
+									</hgroup>
+								<?php
+									endif;
+									if( $content[ 'exists' ] ) :
+										echo $content[ 'value' ];
+									endif; 
+								?>	
+							</div>
+							<?php if( $image[ 'exists' ] ) : ?>
+								<div class="col-12 col-md-6 image">
+									<?php
+										$id_image = get_post_meta( get_the_ID(), 'page_nosotros_vision_image_id', true );   # Obtiene el ID de la imagen.
+										$tag_image = wp_get_attachment_image( $id_image, 'section-page-us' );            		# Obtiene el URL, asigna tamaño.
+										echo $tag_image;
+									?>
+								</div>
+							<?php endif; ?>
 						</div>
+
+					</div>  
+				</section>
+			
+			<?php endif; ?>					
+
+			<?php # Seccion business-mission
+				$title 	  = abc_servitodo_cmb2_get_field_value( get_the_ID(), 'page_nosotros_objectives_title' );
+				$subtitle = abc_servitodo_cmb2_get_field_value( get_the_ID(), 'page_nosotros_objectives_subtitle' );
+				$image    = abc_servitodo_cmb2_get_field_value( get_the_ID(), 'page_nosotros_objectives_image' );
+				$content  = abc_servitodo_cmb2_get_field_value( get_the_ID(), 'page_nosotros_objectives_wysiwyg' );
+
+				if( $title[ 'exists' ] || $subtitle[ 'exists' ] || $image[ 'exists' ] || $content[ 'exists' ] ) :
+			?>
+
+				<section class="business-goals">	
+					<div class="container">
+
+						<div class="row">
+							<div class="col-12 col-md-6 content">
+								<?php if( $title[ 'exists' ] || $subtitle[ 'exists' ] ) : ?>
+									<hgroup>
+										<h3><?php echo $subtitle[ 'value' ] ?></h3>
+										<h2><?php echo $title[ 'value' ]; ?></h2>
+									</hgroup>
+								<?php
+									endif;
+									if( $content[ 'exists' ] ) :
+										echo $content[ 'value' ];
+									endif; 
+								?>	
+							</div>
+							<?php if( $image[ 'exists' ] ) : ?>
+								<div class="col-12 col-md-6 image">
+									<?php
+										$id_image = get_post_meta( get_the_ID(), 'page_nosotros_objectives_image_id', true );   # Obtiene el ID de la imagen.
+										$tag_image = wp_get_attachment_image( $id_image, 'section-page-us' );            		# Obtiene el URL, asigna tamaño.
+										echo $tag_image;
+									?>
+								</div>
+							<?php endif; ?>
+						</div>
+
 					</div>
 
-				</div>  
-			</section>
-			<section class="business-vision">
+				</section>
 
-				<div class="container">
-					<div class="row">                
-						<div class="col-12 col-md-6 content">
-							<hgroup>
-								<h3>Nuestra</h3>
-								<h2>Visión</h2>
-							</hgroup>
-							<p>Suspendisse at augue nunc. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec posuere eros diam, eget vulputate orci suscipit a. Suspendisse maximus ullamcorper mi, ut varius ligula.</p>
-							<p>Mauris luctus, nisi eleifend pharetra sagittis, est arcu pretium enim, eleifend pretium justo velit a lectus. Duis lacus leo, semper at viverra non, malesuada vel mauris. Cras accumsan, nisl ut luctus rhoncus, erat augue molestie nulla, vel bibendum nisl mauris vel mi. Morbi sit amet venenatis tortor. Curabitur sodales malesuada tellus, quis viverra nisi varius a. </p>
-						</div>
-						<div class="col-12 col-md-6 image">
-							<img class="img-fluid" src="<?php echo get_template_directory_uri() .'/dist/assets/images/vision.jpg'; ?>" alt="Visión">
-						</div>
-					</div>
-				</div>  
-
-			</section>
-			<section class="business-goals">
-				
-				<div class="container">
-					<div class="row">                 
-						<div class="col-12 col-md-6 content">
-							<hgroup>
-								<h3>Nuestros</h3>
-								<h2>Objetivos</h2>
-							</hgroup>
-							<p>Curabitur in viverra lorem. Sed et felis risus. Donec semper at quam sit amet placerat. Praesent nisi libero, pellentesque at pellentesque ut, molestie convallis enim. Proin non imperdiet nibh. Morbi porttitor non tortor fringilla eleifend. Suspendisse potenti. Donec malesuada et ipsum in porta. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque ullamcorper arcu sed justo consectetur laoreet. Etiam non lectus id sapien commodo consequat.</p>
-						</div>
-						<div class="col-12 col-md-6 image">
-							<img class="img-fluid" src="<?php echo get_template_directory_uri() .'/dist/assets/images/objetivos.jpg'; ?>" alt="Objetivos">
-						</div>
-					</div>
-				</div>
-
-			</section>
+			<?php endif; ?>
 
 		</section><!-- .business -->
 

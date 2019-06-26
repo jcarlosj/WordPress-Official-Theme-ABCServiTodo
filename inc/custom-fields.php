@@ -243,3 +243,193 @@
         ) );
     }
     add_action( 'cmb2_admin_init', 'abc_servitodo_register_metabox_contact_information' );
+
+    function abc_servitodo_register_metabox_page_nosotros() {
+        $prefix = 'page_nosotros';
+        $page_id = get_page_by_path( 'nosotros', '', 'page' ) -> ID;
+
+        /** MISION */
+
+        /** Metabox para todos los 'post' tipo 'page' */
+        $cmb_page_mision = new_cmb2_box( array(
+            'id'            => $prefix .'_metabox_mision',
+            'title'         => esc_html__( 'Sección - Misión', 'abc-servitodo' ),
+            'show_on'       => array( 'id' => $page_id ),     # Only show on the "home" page
+            'object_types'  => array( 'page' ), // Post type
+        ) );
+
+        /** Campo Texto  */
+        $cmb_page_mision -> add_field( array(
+            'name'    => 'Título',
+            'desc'    => 'Título de la misión de la empresa',
+            'default' => '',
+            'id'      => $prefix .'_mision_title',
+            'type'    => 'text',
+        ) );
+
+        /** Campo Texto  */
+        $cmb_page_mision -> add_field( array(
+            'name'    => 'Sub-título',
+            'desc'    => 'Sub-titulo de la misión de la empresa',
+            'default' => '',
+            'id'      => $prefix .'_mision_subtitle',
+            'type'    => 'text',
+        ) );
+
+        /** Campo Imagen  */
+        $cmb_page_mision -> add_field( array(
+            'name' => esc_html__( 'Imagen:', 'abc-servitodo' ),
+            'desc' => esc_html__( 'Sube una imagen para la sección Misión o ingresa su URL (opcional)', 'abc-servitodo' ),
+            'id'   => $prefix .'_mision_image',
+            'type' => 'file',
+            'allow' => array( 'url', 'attachment' ), // limit to just attachments with array( 'attachment' )
+            'text' => array(
+                'add_upload_file_text' => esc_html__( 'Agregar', 'abc-servitodo' ), # Change upload button text. Default: "Add or Upload File"
+            ),
+            // query_args are passed to wp.media's library query.
+            'query_args' => array(
+                //'type' => 'application/pdf', // Make library only display PDFs.
+                // Or only allow gif, jpg, or png images
+                'type' => array(
+                    'image/jpeg',
+                    'image/png',
+                ),
+            ),
+            'preview_size' => array( '150', '150' ), // Image size to use when previewing in the admin.
+    
+            'mb_callback_args' => ['__block_editor_compatible_meta_box' => true]
+        ) );
+
+        /** Campo WYSIWYG  */
+        $cmb_page_mision -> add_field( array(
+            'name'    => 'Misión',
+            'desc'    => 'Escriba una breve descripción de la misión de su empresa ',
+            'id'      => $prefix .'_mision_wysiwyg',
+            'type'    => 'wysiwyg',
+            'options' => array(),
+        ) );
+
+        /** VISION */
+
+        /** Metabox para todos los 'post' tipo 'page' */
+        $cmb_page_vision = new_cmb2_box( array(
+            'id'            => $prefix .'_metabox_vision',
+            'title'         => esc_html__( 'Seccion - Visión', 'abc-servitodo' ),
+            'show_on'       => array( 'id' => $page_id ),     # Only show on the "home" page
+            'object_types'  => array( 'page' ), // Post type
+        ) );
+
+        /** Campo Texto  */
+        $cmb_page_vision -> add_field( array(
+            'name'    => 'Título',
+            'desc'    => 'Título de la visión de la empresa',
+            'default' => '',
+            'id'      => $prefix .'_vision_title',
+            'type'    => 'text',
+        ) );
+
+        /** Campo Texto  */
+        $cmb_page_vision -> add_field( array(
+            'name'    => 'Sub-título',
+            'desc'    => 'Sub-titulo de la visión de la empresa',
+            'default' => '',
+            'id'      => $prefix .'_vision_subtitle',
+            'type'    => 'text',
+        ) );
+
+        /** Campo Imagen  */
+        $cmb_page_vision -> add_field( array(
+            'name' => esc_html__( 'Imagen:', 'abc-servitodo' ),
+            'desc' => esc_html__( 'Sube una imagen para la sección Visión o ingresa su URL (opcional)', 'abc-servitodo' ),
+            'id'   => $prefix .'_vision_image',
+            'type' => 'file',
+            'allow' => array( 'url', 'attachment' ), // limit to just attachments with array( 'attachment' )
+            'text' => array(
+                'add_upload_file_text' => esc_html__( 'Agregar', 'abc-servitodo' ), # Change upload button text. Default: "Add or Upload File"
+            ),
+            // query_args are passed to wp.media's library query.
+            'query_args' => array(
+                //'type' => 'application/pdf', // Make library only display PDFs.
+                // Or only allow gif, jpg, or png images
+                'type' => array(
+                    'image/jpeg',
+                    'image/png',
+                ),
+            ),
+            'preview_size' => array( '150', '150' ), // Image size to use when previewing in the admin.
+    
+            'mb_callback_args' => ['__block_editor_compatible_meta_box' => true]
+        ) );
+
+        /** Campo WYSIWYG  */
+        $cmb_page_vision -> add_field( array(
+            'name'    => 'Visión',
+            'desc'    => 'Escriba una breve descripción de la visión de su empresa ',
+            'id'      => $prefix .'_vision_wysiwyg',
+            'type'    => 'wysiwyg',
+            'options' => array(),
+        ) );
+
+        /** OBJETIVOS GENERALES */
+
+        /** Metabox para todos los 'post' tipo 'page' */
+        $cmb_page_objectives = new_cmb2_box( array(
+            'id'            => $prefix .'_metabox_objectives',
+            'title'         => esc_html__( 'Seccion - Objetivos generales', 'abc-servitodo' ),
+            'show_on'       => array( 'id' => $page_id ),     # Only show on the "home" page
+            'object_types'  => array( 'page' ), // Post type
+        ) );
+
+        /** Campo Texto  */
+        $cmb_page_objectives -> add_field( array(
+            'name'    => 'Título',
+            'desc'    => 'Título de los objetivos de la empresa',
+            'default' => '',
+            'id'      => $prefix .'_objectives_title',
+            'type'    => 'text',
+        ) );
+
+        /** Campo Texto  */
+        $cmb_page_objectives -> add_field( array(
+            'name'    => 'Sub-título',
+            'desc'    => 'Sub-titulo de los objetivos de la empresa',
+            'default' => '',
+            'id'      => $prefix .'_objectives_subtitle',
+            'type'    => 'text',
+        ) );
+
+        /** Campo Imagen  */
+        $cmb_page_objectives -> add_field( array(
+            'name' => esc_html__( 'Imagen:', 'abc-servitodo' ),
+            'desc' => esc_html__( 'Sube una imagen para la sección objetivos o ingresa su URL (opcional)', 'abc-servitodo' ),
+            'id'   => $prefix .'_objectives_image',
+            'type' => 'file',
+            'allow' => array( 'url', 'attachment' ), // limit to just attachments with array( 'attachment' )
+            'text' => array(
+                'add_upload_file_text' => esc_html__( 'Agregar', 'abc-servitodo' ), # Change upload button text. Default: "Add or Upload File"
+            ),
+            // query_args are passed to wp.media's library query.
+            'query_args' => array(
+                //'type' => 'application/pdf', // Make library only display PDFs.
+                // Or only allow gif, jpg, or png images
+                'type' => array(
+                    'image/jpeg',
+                    'image/png',
+                ),
+            ),
+            'preview_size' => array( '150', '150' ), // Image size to use when previewing in the admin.
+    
+            'mb_callback_args' => ['__block_editor_compatible_meta_box' => true]
+        ) );
+
+        /** Campo WYSIWYG  */
+        $cmb_page_objectives -> add_field( array(
+            'name'    => 'objetivos',
+            'desc'    => 'Escriba una breve descripción de los objetivos de su empresa ',
+            'id'      => $prefix .'_objectives_wysiwyg',
+            'type'    => 'wysiwyg',
+            'options' => array(),
+        ) );
+
+    }
+    add_action( 'cmb2_admin_init', 'abc_servitodo_register_metabox_page_nosotros' );

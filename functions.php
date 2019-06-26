@@ -59,6 +59,12 @@ if ( ! function_exists( 'abc_servitodo_setup' ) ) :
 			960,          # Ancho de la imagen en pixeles
 			true          # True si deseamos que puedo de la redimensión se haga cropping o recorte de la imagen
 		);
+		add_image_size(
+			'section-page-us',   # Nombre del tamaño de imagen que hemos registrado
+			525,          # Alto de la imagen en pixeles
+			394,          # Ancho de la imagen en pixeles
+			true          # True si deseamos que puedo de la redimensión se haga cropping o recorte de la imagen
+		);
 
 		// This theme uses wp_nav_menu() in one location.
 		register_nav_menus( array(
@@ -194,5 +200,20 @@ require get_template_directory() . '/inc/customizer.php';
  */
 if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
+}
+
+function abc_servitodo_cmb2_get_field_value( $id, $cmb2_field_name ) {
+	$exists = false;
+	$value = '';
+
+	if( ! empty( get_post_meta( $id, $cmb2_field_name, true ) ) ) {
+		$exists = true;
+		$value = get_post_meta( $id, $cmb2_field_name, true );
+	}
+	
+	return [
+		'exists' => $exists,
+		'value' => $value
+	];
 }
 
