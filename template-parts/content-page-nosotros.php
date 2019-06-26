@@ -14,7 +14,14 @@
 		<div class="page-header">
 
 			<hgroup class="page--title">
-				<h3>Conoce acerca de nosotros</h3>
+				<?php 
+					$subtitle = abc_servitodo_cmb2_get_field_value( get_the_ID(), 'page_subtitle' );
+					if( $subtitle[ 'exists' ] ) :
+				?>
+
+					<h3><?php echo $subtitle[ 'value' ]; ?></h3>
+
+				<?php endif; ?>
 				<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
 			</hgroup>
 
