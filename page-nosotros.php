@@ -20,17 +20,19 @@ get_header();
 
 		<section class="business">
 				
-			<div class="business--header">
-				<div class="container">
-					<div class="page-header">
-						<hgroup class="page--title">
-							<h3>Conoce acerca de nosotros</h3>
-							<h2>ABCServiTodo</h2>
-						</hgroup>
-						<img class="img-fluid outstanding-image" src="<?php echo get_template_directory_uri() .'/dist/assets/images/nosotros.jpg'; ?>" alt="Nosotros">
-					</div>
-				</div>
-			</div>
+			<?php 
+				while ( have_posts() ) :
+					the_post();
+			
+					get_template_part( 'template-parts/content-page', 'nosotros' );
+			
+					// If comments are open or we have at least one comment, load up the comment template.
+					if ( comments_open() || get_comments_number() ) :
+						comments_template();
+					endif;
+
+				endwhile; // End of the loop.
+			?>
 
 			<section class="business-mission">
 				<div class="container">
