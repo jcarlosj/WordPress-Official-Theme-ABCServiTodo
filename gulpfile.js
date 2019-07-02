@@ -241,7 +241,7 @@ const browsersync = done => {
 		watchEvents: [ 'change', 'add', 'unlink', 'addDir', 'unlinkDir' ]
 	});
 
-	watch( './src/assets/sass/**/.scss', series( 'styles' ) ); 
+	watch( './src/assets/sass/**/*.scss', series( 'styles' ) ); 
 
 	watch([ config .project .files .images. src ], series( 'images' ) ) .on( 'change', browserSync .reload );    
 	watch([ config .project .files .php ]) .on( 'change', browserSync .reload );    

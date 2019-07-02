@@ -22,7 +22,7 @@
                             'menu_class'      => 'menu navbar navbar-nav d-flex flex-column flex-md-row text-center text-md-left text-uppercase',       # Clases del elemento envuelve los items de la lista: por defecto es el elemento ul
                             'container'       => 'nav',                                                                                                 # Elemento 'nav' envolverá al elemento que contiene los items de lista (por defecto es un div)
                             'container_class' => 'menu-main d-flex justify-content-start',                                                              # Clases del elemento que envolverá al elemento que contiente los items de la lista
-                        );  # TO FIX: Solucionar el problema de distancia entre los enlaces
+                        ); 
                         wp_nav_menu( $args );
                     ?>
                 <?php else: ?>

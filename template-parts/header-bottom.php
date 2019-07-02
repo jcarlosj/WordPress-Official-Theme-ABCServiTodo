@@ -29,7 +29,7 @@
                             $args = array(
                                 'theme_location'  => 'primary',                                 # Nombre de la ubicación del tema
                                 'menu_class'      => 'navbar-nav mr-auto text-uppercase',       # Clases del elemento envuelve los items de la lista: por defecto es el elemento ul
-                                'container_id'    => 'menu-main',                               # ID del elemento que envolverá al elemento que contiente los items de la lista
+                                'container_id'    => 'menu-main',                                        # ID del elemento que envolverá al elemento que contiente los items de la lista
                                 'container_class' => 'collapse navbar-collapse menu-main',      # Clases del elemento que envolverá al elemento que contiente los items de la lista
                             );
                             wp_nav_menu( $args );
