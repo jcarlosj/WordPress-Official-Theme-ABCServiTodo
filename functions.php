@@ -163,6 +163,7 @@ function abc_servitodo_scripts() {
 	wp_enqueue_script( 'abc-servitodo-bootstrap', get_template_directory_uri() . '/dist/libs/bootstrap.min.js', array( 'abc-servitodo-jquery' ), 'v4.3.1', true );	// Enlaza JS 'Bootstrap'
 	wp_enqueue_script( 'abc-servitodo-navigation', get_template_directory_uri() . '/dist/assets/js/navigation.min.js', array(), '20151215', true );
 	wp_enqueue_script( 'abc-servitodo-skip-link-focus-fix', get_template_directory_uri() . '/dist/assets/js/skip-link-focus-fix.min.js', array(), '20151215', true );
+	wp_enqueue_script( 'abc-servitodo-carousel', get_template_directory_uri() . '/dist/assets/js/carousel.min.js', array(), '20190702', true );
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
