@@ -27,7 +27,7 @@
   },
   "homepage": "https://cmb2.io",
   "devDependencies": {
-    "grunt": "~0.4.5",
+    "grunt": "~1.5.3",
     "grunt-cli": "~0.1.13",
     "grunt-asciify": "~0.2.2",
     "grunt-banner": "^0.6.0",
